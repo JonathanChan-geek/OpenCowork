@@ -284,7 +284,30 @@
     "refresh": "刷新",
     "urlPlaceholder": "输入网址...",
     "go": "前往",
-    "blockedByRules": "被浏览器插件域名规则拦截"
+    "blockedByRules": "被浏览器插件域名规则拦截",
+    "recorder": {
+      "startRecording": "开始录制工作流",
+      "stopRecording": "停止录制",
+      "recordingCount": "录制中 · {{count}}/{{limit}} 步",
+      "stepLimitReached": "已达到 40 步上限，录制已自动停止",
+      "saveTitle": "保存浏览器工作流",
+      "saveDescription": "整理并保存这 {{count}} 个步骤为本地技能。",
+      "limitNotice": "录制达到 {{limit}} 步上限后已自动停止。请删除不必要的步骤再保存。",
+      "unsupportedNotice": "{{count}} 个不支持的步骤已跳过（富文本编辑或 iframe 内操作）。",
+      "titleLabel": "显示名",
+      "titlePlaceholder": "例如：登录并下载月度报表",
+      "skillNameLabel": "技能名",
+      "descriptionLabel": "一句话用途",
+      "descriptionPlaceholder": "例如：从财务后台下载当月销售报表",
+      "stepsLabel": "录制步骤",
+      "noSteps": "没有可保存的步骤",
+      "deleteStep": "删除第 {{index}} 步",
+      "cancel": "取消",
+      "save": "保存为技能",
+      "saving": "正在保存...",
+      "saveSuccess": "已存为技能，可在对话中直接让助手使用",
+      "saveFailed": "保存工作流技能失败"
+    }
   },
   "pendingInbox": {
     "approval": "审批",

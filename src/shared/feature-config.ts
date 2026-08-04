@@ -28,7 +28,9 @@ export const FEATURES = {
   /** AGENTS.md "/init" hints in composer placeholder and recommendations (coding workflow) */
   agentsInitHint: false,
   /** Token/TPS/TTFT telemetry bar under the composer (debugging dashboard, noise for end users) */
-  runtimeTelemetry: false
+  runtimeTelemetry: false,
+  /** Record built-in browser interactions and save them as local skills */
+  workflowRecorder: true
 } as const
 
 /** builtinIds that survive when allBuiltinProviders is false */

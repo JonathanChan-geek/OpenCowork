@@ -284,7 +284,30 @@
     "refresh": "Refresh",
     "urlPlaceholder": "Enter URL...",
     "go": "Go",
-    "blockedByRules": "Blocked by browser plugin domain rules"
+    "blockedByRules": "Blocked by browser plugin domain rules",
+    "recorder": {
+      "startRecording": "Start recording workflow",
+      "stopRecording": "Stop recording",
+      "recordingCount": "Recording · {{count}}/{{limit}} steps",
+      "stepLimitReached": "The 40-step limit was reached and recording stopped automatically",
+      "saveTitle": "Save browser workflow",
+      "saveDescription": "Review and save these {{count}} steps as a local skill.",
+      "limitNotice": "Recording stopped at the {{limit}}-step limit. Remove unnecessary steps before saving.",
+      "unsupportedNotice": "{{count}} unsupported steps were skipped (rich text editing or iframe actions).",
+      "titleLabel": "Display name",
+      "titlePlaceholder": "Example: Sign in and download the monthly report",
+      "skillNameLabel": "Skill name",
+      "descriptionLabel": "One-sentence purpose",
+      "descriptionPlaceholder": "Example: Download this month's sales report from the finance portal",
+      "stepsLabel": "Recorded steps",
+      "noSteps": "No steps to save",
+      "deleteStep": "Delete step {{index}}",
+      "cancel": "Cancel",
+      "save": "Save as skill",
+      "saving": "Saving...",
+      "saveSuccess": "Saved as a skill. You can now ask the assistant to use it in chat.",
+      "saveFailed": "Failed to save workflow skill"
+    }
   },
   "pendingInbox": {
     "approval": "Approval",

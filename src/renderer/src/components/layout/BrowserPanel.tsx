@@ -1,6 +1,25 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
-import { ArrowLeft, ArrowRight, RefreshCw, Square, Globe, AlertCircle } from 'lucide-react'
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
+import {
+  ArrowLeft,
+  ArrowRight,
+  RefreshCw,
+  Square,
+  Globe,
+  AlertCircle,
+  Disc,
+  Trash2
+} from 'lucide-react'
 import { Button } from '@renderer/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@renderer/components/ui/dialog'
+import { Input } from '@renderer/components/ui/input'
+import { Textarea } from '@renderer/components/ui/textarea'
 import { useUIStore } from '@renderer/stores/ui-store'
 import { useSettingsStore } from '@renderer/stores/settings-store'
 import {
@@ -20,6 +39,77 @@ import {
   BUILTIN_BROWSER_PARTITION,
   stripElectronFromUserAgent
 } from '../../../../shared/browser-plugin'
+import { FEATURES } from '../../../../shared/feature-config'
+import { toast } from 'sonner'
+import {
+  MAX_RECORDED_STEPS,
+  parseRecorderEventPayload,
+  useRecordingSession
+} from '@renderer/lib/recorder/recording-session'
+import { RECORDER_CONSOLE_PREFIX, RECORDER_SCRIPT } from '@renderer/lib/recorder/recorder-script'
+import { RECIPE_FORMAT_VERSION, type RecordedRecipe } from '@renderer/lib/recorder/recipe-types'
+import { renderRecipeSkill } from '@renderer/lib/recorder/recipe-to-skill'
+
+type MutationResult = { success?: boolean; error?: string }
+
+function toKebabCase(value: string, fallback: string): string {
+  const normalized = value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 64)
+    .replace(/-+$/g, '')
+  return normalized || fallback
+}
+
+function joinHomePath(home: string, ...segments: string[]): string {
+  const separator = home.includes('\\') ? '\\' : '/'
+  return [home.replace(/[\\/]+$/, ''), ...segments].join(separator)
+}
+
+async function installRecordedSkill(name: string, content: string): Promise<void> {
+  const home = (await ipcClient.invoke(IPC.APP_HOMEDIR)) as unknown
+  if (typeof home !== 'string' || !home.trim()) throw new Error('Unable to resolve the user home')
+
+  const stagingRoot = joinHomePath(home, '.open-cowork', 'recorder-staging', crypto.randomUUID())
+  const sourcePath = joinHomePath(stagingRoot, name)
+  let stagingCreated = false
+
+  try {
+    const mkdirResult = (await ipcClient.invoke(IPC.FS_MKDIR, {
+      path: sourcePath
+    })) as MutationResult
+    if (!mkdirResult.success) throw new Error(mkdirResult.error || 'Unable to stage the skill')
+    stagingCreated = true
+
+    const writeResult = (await ipcClient.invoke(IPC.FS_WRITE_FILE, {
+      path: joinHomePath(sourcePath, 'SKILL.md'),
+      content
+    })) as MutationResult
+    if (!writeResult.success) throw new Error(writeResult.error || 'Unable to write SKILL.md')
+
+    const installResult = (await ipcClient.invoke(IPC.SKILLS_ADD_FROM_FOLDER, {
+      sourcePath
+    })) as MutationResult
+    if (!installResult.success)
+      throw new Error(installResult.error || 'Unable to install the skill')
+  } finally {
+    if (stagingCreated) {
+      try {
+        const cleanupResult = (await ipcClient.invoke(IPC.FS_DELETE, {
+          path: stagingRoot
+        })) as MutationResult
+        if (!cleanupResult.success) {
+          console.warn('[BrowserRecorder] Failed to clean staging directory:', cleanupResult.error)
+        }
+      } catch (error) {
+        console.warn('[BrowserRecorder] Failed to clean staging directory:', error)
+      }
+    }
+  }
+}
 
 export function BrowserPanel({
   sessionId = null,
@@ -43,6 +133,15 @@ export function BrowserPanel({
   const setBrowserErrorInfo = useUIStore((s) => s.setBrowserErrorInfo)
   const setBrowserWebviewRef = useUIStore((s) => s.setBrowserWebviewRef)
   const browserUserDataReuseEnabled = useSettingsStore((s) => s.browserUserDataReuseEnabled)
+  const isRecording = useRecordingSession((s) => s.isRecording)
+  const recordedSteps = useRecordingSession((s) => s.steps)
+  const recordingStartUrl = useRecordingSession((s) => s.startUrl)
+  const unsupportedStepCount = useRecordingSession((s) => s.unsupportedStepCount)
+  const stoppedByLimit = useRecordingSession((s) => s.stoppedByLimit)
+  const startRecording = useRecordingSession((s) => s.start)
+  const stopRecording = useRecordingSession((s) => s.stop)
+  const resetRecording = useRecordingSession((s) => s.reset)
+  const removeRecordedStep = useRecordingSession((s) => s.removeStep)
 
   const [inputUrl, setInputUrl] = useState(storedUrl)
   const [committedUrl, setCommittedUrl] = useState(storedUrl)
@@ -52,9 +151,19 @@ export function BrowserPanel({
   const [runtimeBrowserUserAgent, setRuntimeBrowserUserAgent] = useState<string | undefined>(
     browserUserDataReuseEnabled ? stripElectronFromUserAgent(navigator.userAgent) : undefined
   )
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false)
+  const [workflowTitle, setWorkflowTitle] = useState('')
+  const [workflowDescription, setWorkflowDescription] = useState('')
+  const [recordedAt, setRecordedAt] = useState('')
+  const [fallbackSkillName, setFallbackSkillName] = useState('recorded-workflow')
+  const [savingSkill, setSavingSkill] = useState(false)
   const webviewRef = useRef<Electron.WebviewTag | null>(null)
   const initialBrowserUserDataReuseEnabledRef = useRef(browserUserDataReuseEnabled)
   const webviewUserAgent = runtimeBrowserUserDataReuseEnabled ? runtimeBrowserUserAgent : undefined
+  const skillName = useMemo(
+    () => toKebabCase(workflowTitle, fallbackSkillName),
+    [fallbackSkillName, workflowTitle]
+  )
   const webviewSessionProps: Pick<
     React.ComponentProps<'webview'>,
     'partition' | 'allowpopups' | 'plugins' | 'useragent'
@@ -120,6 +229,101 @@ export function BrowserPanel({
     },
     [handleWebviewOperationError]
   )
+
+  const activateRecorder = useCallback((): void => {
+    if (!useRecordingSession.getState().isRecording) return
+    runWebviewCommand('install workflow recorder', (wv) =>
+      wv.executeJavaScript(RECORDER_SCRIPT).then(() => undefined)
+    )
+  }, [runWebviewCommand])
+
+  const deactivateRecorder = useCallback((): void => {
+    runWebviewCommand('pause workflow recorder', (wv) =>
+      wv
+        .executeJavaScript('window.__ocRecorderActive = false')
+        .then(() => undefined)
+        .catch(() => undefined)
+    )
+  }, [runWebviewCommand])
+
+  const finishRecording = useCallback(
+    (limitReached: boolean): void => {
+      stopRecording()
+      deactivateRecorder()
+      const stoppedAt = new Date().toISOString()
+      setRecordedAt(stoppedAt)
+      setFallbackSkillName(`recorded-workflow-${Date.now().toString(36)}`)
+      setWorkflowTitle('')
+      setWorkflowDescription('')
+      setSaveDialogOpen(true)
+      if (limitReached) toast.warning(t('browser.recorder.stepLimitReached'))
+    },
+    [deactivateRecorder, stopRecording, t]
+  )
+
+  const handleRecordToggle = useCallback((): void => {
+    if (isRecording) {
+      finishRecording(false)
+      return
+    }
+
+    let currentUrl = committedUrl
+    const wv = webviewRef.current
+    if (isWebviewConnected(wv)) {
+      try {
+        currentUrl = wv.getURL() || currentUrl
+      } catch {
+        // The committed URL is an adequate start anchor if the webview is between navigations.
+      }
+    }
+    startRecording(currentUrl)
+    activateRecorder()
+  }, [activateRecorder, committedUrl, finishRecording, isRecording, startRecording])
+
+  const closeSaveDialog = useCallback((): void => {
+    if (savingSkill) return
+    setSaveDialogOpen(false)
+    resetRecording()
+  }, [resetRecording, savingSkill])
+
+  const handleSaveSkill = useCallback(async (): Promise<void> => {
+    const title = workflowTitle.trim()
+    const description = workflowDescription.trim()
+    if (!title || !description || recordedSteps.length === 0) return
+
+    const recipe: RecordedRecipe = {
+      formatVersion: RECIPE_FORMAT_VERSION,
+      name: skillName,
+      title,
+      description,
+      startUrl: recordingStartUrl,
+      steps: [...recordedSteps],
+      recordedAt: recordedAt || new Date().toISOString()
+    }
+
+    setSavingSkill(true)
+    try {
+      await installRecordedSkill(skillName, renderRecipeSkill(recipe))
+      toast.success(t('browser.recorder.saveSuccess'))
+      setSaveDialogOpen(false)
+      resetRecording()
+    } catch (error) {
+      toast.error(t('browser.recorder.saveFailed'), {
+        description: error instanceof Error ? error.message : String(error)
+      })
+    } finally {
+      setSavingSkill(false)
+    }
+  }, [
+    recordedAt,
+    recordedSteps,
+    recordingStartUrl,
+    resetRecording,
+    skillName,
+    t,
+    workflowDescription,
+    workflowTitle
+  ])
 
   useEffect(() => {
     setBrowserWebviewRef(webviewRef, sessionId, projectId)
@@ -228,6 +432,9 @@ export function BrowserPanel({
       setInputUrl(e.url)
       setBrowserUrl(e.url, sessionId, projectId)
       updateNavState()
+      const result = useRecordingSession.getState().recordNavigation(e.url)
+      if (result.autoStopped) finishRecording(true)
+      activateRecorder()
     }
 
     const onNavigateInPage = (e: Electron.DidNavigateInPageEvent): void => {
@@ -261,6 +468,27 @@ export function BrowserPanel({
       ipcClient.invoke(IPC.SHELL_OPEN_EXTERNAL, e.url)
     }
 
+    const onDomReady = (): void => {
+      activateRecorder()
+    }
+
+    const onConsoleMessage = (e: Event & { message?: string }): void => {
+      const message = e.message
+      if (typeof message !== 'string' || !message.startsWith(RECORDER_CONSOLE_PREFIX)) return
+
+      let rawPayload: unknown
+      try {
+        rawPayload = JSON.parse(message.slice(RECORDER_CONSOLE_PREFIX.length))
+      } catch {
+        return
+      }
+
+      const payload = parseRecorderEventPayload(rawPayload)
+      if (!payload) return
+      const result = useRecordingSession.getState().recordEvent(payload)
+      if (result.autoStopped) finishRecording(true)
+    }
+
     wv.addEventListener('did-start-loading', onStartLoading)
     wv.addEventListener('did-stop-loading', onStopLoading)
     wv.addEventListener('did-navigate', onNavigate as EventListener)
@@ -269,6 +497,8 @@ export function BrowserPanel({
     wv.addEventListener('did-fail-load', onFailLoad as EventListener)
     wv.addEventListener('will-navigate', onWillNavigate as EventListener)
     wv.addEventListener('new-window', onNewWindow as EventListener)
+    wv.addEventListener('dom-ready', onDomReady)
+    wv.addEventListener('console-message', onConsoleMessage as EventListener)
 
     return () => {
       wv.removeEventListener('did-start-loading', onStartLoading)
@@ -279,11 +509,16 @@ export function BrowserPanel({
       wv.removeEventListener('did-fail-load', onFailLoad as EventListener)
       wv.removeEventListener('will-navigate', onWillNavigate as EventListener)
       wv.removeEventListener('new-window', onNewWindow as EventListener)
+      wv.removeEventListener('dom-ready', onDomReady)
+      wv.removeEventListener('console-message', onConsoleMessage as EventListener)
     }
   }, [
+    activateRecorder,
     canNavigateTo,
     committedUrl,
+    finishRecording,
     projectId,
+    runtimeBrowserUserDataReuseEnabled,
     sessionId,
     setBrowserLoading,
     setBrowserErrorInfo,
@@ -358,6 +593,40 @@ export function BrowserPanel({
         >
           {t('browser.go')}
         </Button>
+
+        {FEATURES.workflowRecorder && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className={`size-6 ${
+              isRecording
+                ? 'bg-red-500/10 text-red-500 hover:bg-red-500/15 hover:text-red-500 dark:text-red-400'
+                : 'text-muted-foreground'
+            }`}
+            onClick={handleRecordToggle}
+            disabled={!committedUrl && !isRecording}
+            aria-pressed={isRecording}
+            aria-label={
+              isRecording
+                ? t('browser.recorder.stopRecording')
+                : t('browser.recorder.startRecording')
+            }
+            title={
+              isRecording
+                ? t('browser.recorder.recordingCount', {
+                    count: recordedSteps.length,
+                    limit: MAX_RECORDED_STEPS
+                  })
+                : t('browser.recorder.startRecording')
+            }
+          >
+            {isRecording ? (
+              <Square className="size-3 animate-pulse fill-current" />
+            ) : (
+              <Disc className="size-3.5" />
+            )}
+          </Button>
+        )}
       </div>
 
       {/* Loading bar */}
@@ -406,6 +675,144 @@ export function BrowserPanel({
           </div>
         ) : null}
       </div>
+
+      <Dialog
+        open={saveDialogOpen}
+        onOpenChange={(open) => {
+          if (!open) closeSaveDialog()
+        }}
+      >
+        <DialogContent className="gap-0 overflow-hidden p-0 sm:max-w-xl">
+          <DialogHeader className="border-b bg-muted/20 px-5 py-4 pr-12">
+            <DialogTitle className="flex items-center gap-2.5 text-base">
+              <span className="flex size-7 items-center justify-center rounded-full bg-red-500/10 text-red-500 dark:text-red-400">
+                <Disc className="size-3.5" />
+              </span>
+              {t('browser.recorder.saveTitle')}
+            </DialogTitle>
+            <DialogDescription className="text-xs">
+              {t('browser.recorder.saveDescription', { count: recordedSteps.length })}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 overflow-y-auto px-5 py-4">
+            {stoppedByLimit && (
+              <div className="rounded-md border border-amber-500/30 bg-amber-500/8 px-3 py-2 text-xs text-amber-700 dark:text-amber-300">
+                {t('browser.recorder.limitNotice', { limit: MAX_RECORDED_STEPS })}
+              </div>
+            )}
+
+            {unsupportedStepCount > 0 && (
+              <div className="rounded-md border border-border/70 bg-muted/35 px-3 py-2 text-xs text-muted-foreground">
+                {t('browser.recorder.unsupportedNotice', { count: unsupportedStepCount })}
+              </div>
+            )}
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <label htmlFor="recorded-workflow-title" className="text-xs font-medium">
+                  {t('browser.recorder.titleLabel')}
+                </label>
+                <Input
+                  id="recorded-workflow-title"
+                  value={workflowTitle}
+                  onChange={(event) => setWorkflowTitle(event.target.value)}
+                  placeholder={t('browser.recorder.titlePlaceholder')}
+                  maxLength={80}
+                  autoFocus
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <span className="text-xs font-medium">{t('browser.recorder.skillNameLabel')}</span>
+                <div className="flex h-9 items-center rounded-md border border-input bg-muted/30 px-3 font-mono text-xs text-muted-foreground">
+                  <span className="truncate">{skillName}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label htmlFor="recorded-workflow-description" className="text-xs font-medium">
+                {t('browser.recorder.descriptionLabel')}
+              </label>
+              <Textarea
+                id="recorded-workflow-description"
+                value={workflowDescription}
+                onChange={(event) => setWorkflowDescription(event.target.value)}
+                placeholder={t('browser.recorder.descriptionPlaceholder')}
+                maxLength={200}
+                className="min-h-20 resize-none"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium">{t('browser.recorder.stepsLabel')}</span>
+                <span className="font-mono text-[10px] text-muted-foreground">
+                  {recordedSteps.length}/{MAX_RECORDED_STEPS}
+                </span>
+              </div>
+
+              <div className="max-h-56 overflow-y-auto rounded-md border border-border/70 bg-muted/15">
+                {recordedSteps.length === 0 ? (
+                  <div className="px-3 py-8 text-center text-xs text-muted-foreground">
+                    {t('browser.recorder.noSteps')}
+                  </div>
+                ) : (
+                  <ol className="divide-y divide-border/60">
+                    {recordedSteps.map((step, index) => (
+                      <li
+                        key={`${step.tool}-${step.pageUrl}-${index}`}
+                        className="group flex items-start gap-2.5 px-3 py-2.5"
+                      >
+                        <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/8 font-mono text-[10px] text-primary">
+                          {index + 1}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="font-mono text-[10px] text-muted-foreground">
+                            {step.tool}
+                          </div>
+                          <div className="truncate text-xs text-foreground/90">
+                            {step.description}
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="size-6 shrink-0 text-muted-foreground opacity-70 hover:text-destructive sm:opacity-0 sm:group-hover:opacity-100"
+                          onClick={() => removeRecordedStep(index)}
+                          disabled={savingSkill}
+                          aria-label={t('browser.recorder.deleteStep', { index: index + 1 })}
+                          title={t('browser.recorder.deleteStep', { index: index + 1 })}
+                        >
+                          <Trash2 className="size-3" />
+                        </Button>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter className="border-t bg-muted/20 px-5 py-3">
+            <Button variant="outline" onClick={closeSaveDialog} disabled={savingSkill}>
+              {t('browser.recorder.cancel')}
+            </Button>
+            <Button
+              onClick={() => void handleSaveSkill()}
+              disabled={
+                savingSkill ||
+                !workflowTitle.trim() ||
+                !workflowDescription.trim() ||
+                recordedSteps.length === 0
+              }
+            >
+              {savingSkill ? t('browser.recorder.saving') : t('browser.recorder.save')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
