@@ -10,6 +10,7 @@ import { IPC } from '../ipc/channels'
 import { ipcClient } from '../ipc/ipc-client'
 import { useUIStore } from '../../stores/ui-store'
 import { encodeStructuredToolResult, encodeToolError } from './tool-result-format'
+import { executeRecipeReplay, REPLAY_TOOL_NAME } from '../recorder/recipe-replay-tool'
 import type { ToolContext } from './tool-types'
 
 type NativeBrowserToolResponse = {
@@ -685,6 +686,15 @@ async function runBrowserTool(
   ctx: ToolContext
 ): Promise<ToolResultContent> {
   switch (toolName) {
+    case REPLAY_TOOL_NAME:
+      // Deterministic recipe replay drives the browser through the same executors;
+      // inject them so the replayer stays free of circular imports.
+      return await executeRecipeReplay(
+        input,
+        ctx,
+        (tool, args) => runBrowserTool(tool, args, ctx),
+        () => useUIStore.getState().getBrowserState(ctx.sessionId).url ?? null
+      )
     case 'BrowserNavigate':
       return await executeBrowserNavigate(input, ctx)
     case 'BrowserGetContent':

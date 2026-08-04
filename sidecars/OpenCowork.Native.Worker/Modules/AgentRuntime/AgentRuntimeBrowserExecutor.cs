@@ -14,7 +14,10 @@ internal static class AgentRuntimeBrowserExecutor
         "BrowserClick",
         "BrowserType",
         "BrowserScroll",
-        "BrowserEvaluate"
+        "BrowserEvaluate",
+        // Renderer-implemented deterministic replay of recorded workflows; routed
+        // through the same browser/tool-request reverse channel.
+        "ReplayRecordedWorkflow"
     };
 
     private static readonly JsonWriterOptions WriterOptions = new()
