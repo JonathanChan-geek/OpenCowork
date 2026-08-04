@@ -221,6 +221,10 @@
       "globalHint": "Interface",
       "current": "Active",
       "presets": {
+        "jade": {
+          "label": "Jade Teal",
+          "desc": "A calm teal workspace palette with soft borders and generous whitespace."
+        },
         "mulberry": {
           "label": "Obsidian Gray",
           "desc": "A high-contrast black, white, and gray palette with a clean host library and restrained terminal surface."
