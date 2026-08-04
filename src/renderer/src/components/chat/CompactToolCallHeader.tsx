@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Check, ChevronDown, ChevronRight, Loader2, X } from 'lucide-react'
+import { ChevronDown, ChevronRight, Loader2 } from 'lucide-react'
 import { cn } from '@renderer/lib/utils'
 import type { ToolCallStatus } from '@renderer/lib/agent/types'
 
@@ -81,38 +81,13 @@ function compactHeaderStateClassName(
   return cn('text-muted-foreground', showOpenBackground && 'bg-muted/25 dark:bg-white/[0.025]')
 }
 
-function compactIconShellClassName(
-  status: ToolCallStatus | 'completed',
-  isShellTool: boolean
-): string {
-  if (status === 'error') return 'border-destructive/25 bg-transparent text-destructive'
-  if (status === 'canceled') {
-    return 'border-muted-foreground/25 bg-transparent text-muted-foreground'
-  }
-  if (status === 'running') return 'border-sky-500/25 bg-transparent text-sky-600 dark:text-sky-300'
-  if (status === 'streaming') {
-    return isShellTool
-      ? 'border-sky-500/25 bg-transparent text-sky-600 dark:text-sky-300'
-      : 'border-violet-500/25 bg-transparent text-violet-600 dark:text-violet-300'
-  }
-  if (status === 'pending_approval') {
-    return 'border-amber-500/30 bg-transparent text-amber-600 dark:text-amber-300'
-  }
-  return 'border-lime-500/25 bg-transparent text-lime-600 dark:text-lime-400'
-}
-
-function CompactLifecycleGlyph({
-  status
-}: {
-  status: ToolCallStatus | 'completed'
-}): React.JSX.Element | null {
-  if (status === 'running' || status === 'streaming' || status === 'pending_approval') {
-    return <Loader2 className="size-3 animate-spin" />
-  }
-  if (status === 'error') return <X className="size-3 animate-in zoom-in-75 duration-200" />
-  if (status === 'canceled') return <X className="size-3 animate-in zoom-in-75 duration-200" />
-  if (status === 'completed') return <Check className="size-3 animate-in zoom-in-75 duration-200" />
-  return null
+// DEEIX-style timeline node: terminal states collapse to a small dot (failure is
+// a red dot, not a red bar); only in-flight states keep a spinner for liveness.
+function timelineDotClassName(status: ToolCallStatus | 'completed'): string {
+  if (status === 'error') return 'bg-destructive/80'
+  if (status === 'canceled') return 'bg-muted-foreground/50'
+  if (status === 'pending_approval') return 'bg-amber-500/80'
+  return 'bg-muted-foreground/38 group-hover:bg-foreground/58'
 }
 
 export function CompactToolCallHeader({
@@ -124,15 +99,8 @@ export function CompactToolCallHeader({
   elapsed,
   open
 }: CompactToolCallHeaderProps): React.JSX.Element {
-  const hasLifecycleGlyph =
-    status === 'running' ||
-    status === 'streaming' ||
-    status === 'pending_approval' ||
-    status === 'error' ||
-    status === 'canceled' ||
-    status === 'completed'
   const isShellTool = model.namespace === 'shell'
-  const lifecycleGlyph = hasLifecycleGlyph ? <CompactLifecycleGlyph status={status} /> : null
+  const showSpinner = status === 'running' || status === 'streaming'
   const toolLabel = model.toolLabel ?? model.primary
   const primaryDetail = model.toolLabel && model.primary !== model.toolLabel ? model.primary : ''
   const detailText = [primaryDetail, model.secondary].filter(Boolean).join(' · ')
@@ -149,14 +117,20 @@ export function CompactToolCallHeader({
       title={model.title}
     >
       <span
-        className={cn(
-          'relative flex size-5 shrink-0 items-center justify-center rounded-full border transition-colors',
-          compactIconShellClassName(status, isShellTool)
-        )}
+        className="relative flex h-5 w-3.5 shrink-0 items-center justify-center"
         aria-hidden="true"
+        title={hasError ? (errorTitle ?? undefined) : undefined}
       >
-        {lifecycleGlyph ?? (
-          <span className="flex size-3 items-center justify-center">{model.icon}</span>
+        <span className="absolute -inset-y-1.5 left-1/2 w-px -translate-x-1/2 bg-border/45" />
+        {showSpinner ? (
+          <Loader2 className="relative z-10 size-3 animate-spin" />
+        ) : (
+          <span
+            className={cn(
+              'relative z-10 size-1.5 rounded-full ring-4 ring-background transition-colors',
+              timelineDotClassName(status)
+            )}
+          />
         )}
       </span>
       <span className="flex min-w-0 flex-1 items-baseline gap-1.5">
@@ -176,7 +150,7 @@ export function CompactToolCallHeader({
                     ? `tool-name-live-pulse--${isShellTool ? 'shell' : 'running'}`
                     : `tool-name-live-pulse--${isShellTool ? 'shell' : 'streaming'}`
                 ]
-              : 'text-foreground/82'
+              : 'text-current transition-colors'
           )}
         >
           {toolLabel}
@@ -187,7 +161,9 @@ export function CompactToolCallHeader({
           </span>
         ) : null}
       </span>
-      {statusLabel ? (
+      {/* Terminal states are conveyed by the timeline dot alone (DEEIX style); a
+          text pill only remains for states the user may need to act on or watch. */}
+      {statusLabel && (isActiveStatus || status === 'pending_approval') ? (
         <span
           className={cn(
             isActiveStatus
@@ -214,12 +190,6 @@ export function CompactToolCallHeader({
           {badge.label}
         </span>
       ))}
-      {hasError ? (
-        <span
-          className="size-1.5 shrink-0 rounded-full bg-red-500 dark:bg-red-400"
-          title={errorTitle ?? undefined}
-        />
-      ) : null}
       {elapsed ? (
         <span className="shrink-0 text-[9px] tabular-nums text-muted-foreground/60">{elapsed}</span>
       ) : null}

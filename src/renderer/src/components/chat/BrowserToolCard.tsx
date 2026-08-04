@@ -55,8 +55,10 @@ function parseStructuredOutput(
 function parseErrorMessage(output: ToolResultContent | undefined): string | null {
   if (typeof output !== 'string') return null
   const parsed = decodeStructuredToolResult(output)
-  if (parsed && !Array.isArray(parsed) && typeof parsed.error === 'string' && parsed.error.trim()) {
-    return parsed.error
+  if (parsed && !Array.isArray(parsed)) {
+    // A structured result that decoded cleanly is only an error if it says so —
+    // falling through here used to paint successful TOON payloads red.
+    return typeof parsed.error === 'string' && parsed.error.trim() ? parsed.error : null
   }
   return output.trim() || null
 }
