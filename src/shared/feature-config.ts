@@ -30,7 +30,9 @@ export const FEATURES = {
   /** Token/TPS/TTFT telemetry bar under the composer (debugging dashboard, noise for end users) */
   runtimeTelemetry: false,
   /** Record built-in browser interactions and save them as local skills */
-  workflowRecorder: true
+  workflowRecorder: true,
+  /** OpenCode config migration center in settings (irrelevant for this distribution) */
+  migrationCenter: false
 } as const
 
 /** builtinIds that survive when allBuiltinProviders is false */
