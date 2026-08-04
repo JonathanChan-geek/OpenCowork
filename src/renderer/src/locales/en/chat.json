@@ -1074,6 +1074,40 @@
     "ranCommandsInline_one": "Ran {{count}} command",
     "ranCommandsInline_other": "Ran {{count}} commands"
   },
+  "streamMarkdown": {
+    "thinking": {
+      "active": "Thinking...",
+      "done": "Thought process"
+    },
+    "expand": "Expand {{count}} lines",
+    "collapse": "Collapse",
+    "back": "Back",
+    "footnoteBackref": "Back to reference",
+    "scrollableTable": "Scrollable table",
+    "scrollableTableHint": "Scroll horizontally to view the complete table.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyFailed": "Copy failed",
+    "copyLatex": "Copy LaTeX",
+    "latexCopied": "LaTeX copied",
+    "latexCopyFailed": "Failed to copy LaTeX",
+    "openPreview": "Open preview",
+    "previewImage": "Preview image",
+    "editImage": "Edit image",
+    "downloadImage": "Download image",
+    "imageUnavailable": "Image unavailable",
+    "controls": {
+      "close": "Close",
+      "copied": "Copied",
+      "copyCode": "Copy code",
+      "copyLink": "Copy link",
+      "downloadFile": "Download file",
+      "downloadDiagram": "Download diagram",
+      "exitFullscreen": "Exit fullscreen",
+      "viewFullscreen": "View fullscreen",
+      "openLink": "Open link"
+    }
+  },
   "messageActions": {
     "fork": "Fork",
     "forked": "Forked into a new conversation",

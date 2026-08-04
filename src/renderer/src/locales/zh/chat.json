@@ -1073,6 +1073,40 @@
       "copied": "已复制"
     }
   },
+  "streamMarkdown": {
+    "thinking": {
+      "active": "思考中",
+      "done": "思考过程"
+    },
+    "expand": "展开 {{count}} 行",
+    "collapse": "收起",
+    "back": "返回",
+    "footnoteBackref": "返回引用处",
+    "scrollableTable": "可横向滚动的表格",
+    "scrollableTableHint": "横向滚动可查看完整表格。",
+    "copy": "复制",
+    "copied": "已复制",
+    "copyFailed": "复制失败",
+    "copyLatex": "复制 LaTeX",
+    "latexCopied": "LaTeX 已复制",
+    "latexCopyFailed": "LaTeX 复制失败",
+    "openPreview": "打开预览",
+    "previewImage": "预览图片",
+    "editImage": "编辑图片",
+    "downloadImage": "下载图片",
+    "imageUnavailable": "图片不可用",
+    "controls": {
+      "close": "关闭",
+      "copied": "已复制",
+      "copyCode": "复制代码",
+      "copyLink": "复制链接",
+      "downloadFile": "下载文件",
+      "downloadDiagram": "下载图表",
+      "exitFullscreen": "退出全屏",
+      "viewFullscreen": "全屏查看",
+      "openLink": "打开链接"
+    }
+  },
   "messageActions": {
     "fork": "分叉",
     "forked": "已分叉为新会话",
