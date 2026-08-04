@@ -26,7 +26,9 @@ export const FEATURES = {
   /** UI language selector; when false the UI is pinned to Simplified Chinese */
   languageSelector: false,
   /** AGENTS.md "/init" hints in composer placeholder and recommendations (coding workflow) */
-  agentsInitHint: false
+  agentsInitHint: false,
+  /** Token/TPS/TTFT telemetry bar under the composer (debugging dashboard, noise for end users) */
+  runtimeTelemetry: false
 } as const
 
 /** builtinIds that survive when allBuiltinProviders is false */

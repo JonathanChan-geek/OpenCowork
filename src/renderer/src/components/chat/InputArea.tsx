@@ -1336,7 +1336,7 @@ export function RuntimeTokenStatistics({
   requestModel?: MessageRequestModelMeta | null
   isStreaming?: boolean
   className?: string
-}): React.JSX.Element {
+}): React.JSX.Element | null {
   const model = useProviderStore(
     useShallow((state) => {
       if (!requestModel?.modelId) return null
@@ -1348,6 +1348,8 @@ export function RuntimeTokenStatistics({
       return provider?.models.find((item) => item.id === requestModel.modelId) ?? null
     })
   )
+
+  if (!FEATURES.runtimeTelemetry) return null
 
   return (
     <ComposerRuntimeStatus
@@ -4741,7 +4743,7 @@ export function InputArea({
           </div>
         </div>
 
-        {draftSessionId && (
+        {FEATURES.runtimeTelemetry && draftSessionId && (
           <ComposerRuntimeStatus
             sessionId={draftSessionId}
             isStreaming={isStreaming}
