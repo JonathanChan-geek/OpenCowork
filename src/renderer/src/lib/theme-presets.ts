@@ -1,7 +1,15 @@
 import type { ITheme } from '@xterm/xterm'
 
 export type AppThemeMode = 'light' | 'dark'
-export type AppThemePreset = 'jade' | 'mulberry' | 'studio' | 'graphite' | 'ocean' | 'forest' | 'dawn'
+export type AppThemePreset =
+  | 'paper'
+  | 'jade'
+  | 'mulberry'
+  | 'studio'
+  | 'graphite'
+  | 'ocean'
+  | 'forest'
+  | 'dawn'
 export type SshTerminalThemePreset = AppThemePreset
 
 type ThemeCssVars = Record<`--${string}`, string>
@@ -71,7 +79,7 @@ export type ThemePresetDefinition = {
   ssh: Record<AppThemeMode, SshChromePalette>
 }
 
-export const DEFAULT_APP_THEME_PRESET: AppThemePreset = 'jade'
+export const DEFAULT_APP_THEME_PRESET: AppThemePreset = 'paper'
 export const DEFAULT_SSH_TERMINAL_THEME_PRESET: SshTerminalThemePreset = DEFAULT_APP_THEME_PRESET
 
 function createTerminalTheme(colors: {
@@ -122,6 +130,322 @@ function createTerminalTheme(colors: {
 }
 
 const PRESET_DEFINITIONS: Record<AppThemePreset, ThemePresetDefinition> = {
+  // Ported from DEEIX-Chat (Apache-2.0): warm paper canvas with a terracotta
+  // primary, hairline borders and a soft shadow scale. oklch strings are used
+  // verbatim where possible; deviations (real red destructive in light mode,
+  // dark-mode secondary/sidebar-border) fix apparent upstream oddities.
+  paper: {
+    id: 'paper',
+    labelKey: 'general.themePreset.presets.paper.label',
+    descriptionKey: 'general.themePreset.presets.paper.desc',
+    swatches: ['#c96442', '#e8e6dc', '#faf9f4'],
+    preview: {
+      light: {
+        rail: 'oklch(0.9749 0.0029 106.45)',
+        canvas: 'oklch(0.9786 0.0027 106.45)',
+        card: 'oklch(0.9818 0.0054 95.0986)',
+        accent: 'oklch(0.6171 0.1375 39.0427)',
+        accentSoft: 'oklch(0.9341 0.0153 90.239)',
+        text: 'oklch(0.3438 0.0269 95.7226)'
+      },
+      dark: {
+        rail: 'oklch(0.2303 0.002 106.56)',
+        canvas: 'oklch(0.2389 0.0019 106.54)',
+        card: 'oklch(0.2679 0.0036 106.6427)',
+        accent: 'oklch(0.6724 0.1308 38.7559)',
+        accentSoft: 'oklch(0.3085 0.0035 106.6)',
+        text: 'oklch(0.8074 0.0142 93.0137)'
+      }
+    },
+    cssVars: {
+      light: {
+        '--background': 'oklch(0.9786 0.0027 106.45)',
+        '--foreground': 'oklch(0.3438 0.0269 95.7226)',
+        '--card': 'oklch(0.9818 0.0054 95.0986)',
+        '--card-foreground': 'oklch(0.1908 0.002 106.5859)',
+        '--popover': 'oklch(1 0 0)',
+        '--popover-foreground': 'oklch(0.2671 0.0196 98.939)',
+        '--primary': 'oklch(0.6171 0.1375 39.0427)',
+        '--primary-foreground': 'oklch(1 0 0)',
+        '--secondary': 'oklch(0.9245 0.0138 92.9892)',
+        '--secondary-foreground': 'oklch(0.4334 0.0177 98.6048)',
+        '--muted': 'oklch(0.9341 0.0153 90.239)',
+        '--muted-foreground': 'oklch(0.6059 0.0075 97.4233)',
+        '--accent': 'oklch(0.9484 0.0032 81.39)',
+        '--accent-foreground': 'oklch(0.2671 0.0196 98.939)',
+        '--destructive': 'oklch(0.577 0.215 27.325)',
+        '--destructive-foreground': 'oklch(1 0 0)',
+        '--border': 'oklch(0.8779 0.003 106.46)',
+        '--input': 'oklch(0.7621 0.0156 98.3528)',
+        '--ring': 'oklch(0.6171 0.1375 39.0427)',
+        '--chart-1': 'oklch(0.5583 0.1276 42.9956)',
+        '--chart-2': 'oklch(0.6898 0.1581 290.4107)',
+        '--chart-3': 'oklch(0.8816 0.0276 93.128)',
+        '--chart-4': 'oklch(0.8822 0.0403 298.1792)',
+        '--chart-5': 'oklch(0.5608 0.1348 42.0584)',
+        '--sidebar': 'oklch(0.9749 0.0029 106.45)',
+        '--sidebar-foreground': 'oklch(0.359 0.0051 106.6524)',
+        '--sidebar-primary': 'oklch(0.6171 0.1375 39.0427)',
+        '--sidebar-primary-foreground': 'oklch(0.9881 0 0)',
+        '--sidebar-accent': 'oklch(0.9484 0.0032 81.39)',
+        '--sidebar-accent-foreground': 'oklch(0.325 0 0)',
+        '--sidebar-border': 'oklch(0.9101 0.003 106.46)',
+        '--sidebar-ring': 'oklch(0.7731 0 0)',
+        '--workspace-titlebar-bg': 'oklch(0.9786 0.0027 106.45)',
+        '--workspace-titlebar-border': 'oklch(0.9101 0.003 106.46)',
+        '--workspace-titlebar-button-hover': 'oklch(0.9435 0.008 95)',
+        '--workspace-titlebar-toolgroup-bg': 'oklch(0.9649 0.004 100)',
+        '--workspace-titlebar-toolgroup-border': 'oklch(0.8779 0.003 106.46)',
+        '--workspace-titlebar-toolbutton-hover': 'oklch(0.9379 0.008 95)',
+        '--workspace-titlebar-toolbutton-active': 'oklch(0.9199 0.01 92)',
+        '--workspace-sidebar-divider': 'oklch(0.9101 0.003 106.46)',
+        '--workspace-sidebar-section-border': 'oklch(0.9209 0.003 106.46)',
+        '--workspace-sidebar-row-hover-bg': 'oklch(0.9329 0.008 92)',
+        '--workspace-sidebar-row-hover-border': 'oklch(0.8949 0.006 95)',
+        '--workspace-sidebar-row-active-bg': 'oklch(0.9139 0.011 92)',
+        '--workspace-sidebar-row-active-border': 'oklch(0.8729 0.008 95)',
+        '--workspace-sidebar-row-active-shadow': '0 10px 18px -16px rgba(80, 60, 20, 0.14)',
+        '--activity-card-bg': 'oklch(0.9818 0.0054 95.0986)',
+        '--activity-card-border': 'oklch(0.8969 0.004 106.46)',
+        '--activity-card-divider': 'oklch(0.9309 0.006 95)',
+        '--activity-card-header-hover': 'oklch(0.9489 0.006 95)',
+        '--activity-card-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px -1px rgba(0, 0, 0, 0.07)',
+        '--composer-shell-top': 'oklch(0.9903 0.0035 95)',
+        '--composer-shell-bottom': 'oklch(0.9903 0.0035 95)',
+        '--composer-shell-border': 'oklch(0.8879 0.004 106.46)',
+        '--composer-shell-border-focus': 'color-mix(in srgb, oklch(0.6171 0.1375 39.0427) 34%, oklch(0.8879 0.004 106.46))',
+        '--composer-shell-shadow':
+          '0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 4px 14px -8px rgba(80, 60, 20, 0.12)',
+        '--composer-shell-shadow-focus':
+          '0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 6px 18px -8px rgba(80, 60, 20, 0.16), 0 0 0 3px color-mix(in srgb, oklch(0.6171 0.1375 39.0427) 14%, transparent)',
+        '--composer-toolbar-border': 'oklch(0.9309 0.006 95)',
+        '--composer-panel-bg': 'oklch(1 0 0)',
+        '--composer-panel-border': 'oklch(0.8879 0.004 106.46)',
+        '--composer-panel-shadow':
+          '0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 10px 24px -12px rgba(80, 60, 20, 0.16)',
+        '--composer-control-bg-hover': 'oklch(0.9435 0.008 95)',
+        '--composer-control-active-text': 'oklch(0.3438 0.0269 95.7226)',
+        '--composer-send-start': 'oklch(0.6171 0.1375 39.0427)',
+        '--composer-send-end': 'oklch(0.5771 0.1375 39.0427)',
+        '--composer-send-foreground': 'oklch(1 0 0)',
+        '--composer-chip-border': 'oklch(0.8879 0.004 106.46)',
+        '--composer-chip-text': 'oklch(0.5259 0.012 97)',
+        '--composer-chip-hover': 'oklch(0.9435 0.008 95)',
+        '--composer-drop-bg': 'oklch(0.9329 0.008 92)'
+      },
+      dark: {
+        '--background': 'oklch(0.2389 0.0019 106.54)',
+        '--foreground': 'oklch(0.8074 0.0142 93.0137)',
+        '--card': 'oklch(0.2679 0.0036 106.6427)',
+        '--card-foreground': 'oklch(0.9818 0.0054 95.0986)',
+        '--popover': 'oklch(0.3085 0.0035 106.6039)',
+        '--popover-foreground': 'oklch(0.9211 0.004 106.4781)',
+        '--primary': 'oklch(0.6724 0.1308 38.7559)',
+        '--primary-foreground': 'oklch(1 0 0)',
+        '--secondary': 'oklch(0.3185 0.004 106.6)',
+        '--secondary-foreground': 'oklch(0.8074 0.0142 93.0137)',
+        '--muted': 'oklch(0.2213 0.0038 106.707)',
+        '--muted-foreground': 'oklch(0.7713 0.0169 99.0657)',
+        '--accent': 'oklch(0.1832 0 89.88)',
+        '--accent-foreground': 'oklch(0.9663 0.008 98.8792)',
+        '--destructive': 'oklch(0.6368 0.2078 25.3313)',
+        '--destructive-foreground': 'oklch(1 0 0)',
+        '--border': 'oklch(0.3484 0.0025 63.22)',
+        '--input': 'oklch(0.4336 0.0113 100.2195)',
+        '--ring': 'oklch(0.6724 0.1308 38.7559)',
+        '--chart-1': 'oklch(0.5583 0.1276 42.9956)',
+        '--chart-2': 'oklch(0.6898 0.1581 290.4107)',
+        '--chart-3': 'oklch(0.213 0.0078 95.4245)',
+        '--chart-4': 'oklch(0.3074 0.0516 289.323)',
+        '--chart-5': 'oklch(0.5608 0.1348 42.0584)',
+        '--sidebar': 'oklch(0.2303 0.002 106.56)',
+        '--sidebar-foreground': 'oklch(0.8074 0.0142 93.0137)',
+        '--sidebar-primary': 'oklch(0.6724 0.1308 38.7559)',
+        '--sidebar-primary-foreground': 'oklch(0.9881 0 0)',
+        '--sidebar-accent': 'oklch(0.1832 0 89.88)',
+        '--sidebar-accent-foreground': 'oklch(0.8074 0.0142 93.0137)',
+        '--sidebar-border': 'oklch(0.3184 0.0025 106.5)',
+        '--sidebar-ring': 'oklch(0.7731 0 0)',
+        '--workspace-titlebar-bg': 'oklch(0.2389 0.0019 106.54)',
+        '--workspace-titlebar-border': 'oklch(0.3184 0.0025 106.5)',
+        '--workspace-titlebar-button-hover': 'oklch(0.2889 0.003 106.5)',
+        '--workspace-titlebar-toolgroup-bg': 'oklch(0.2679 0.0036 106.6427)',
+        '--workspace-titlebar-toolgroup-border': 'oklch(0.3484 0.0025 63.22)',
+        '--workspace-titlebar-toolbutton-hover': 'oklch(0.2989 0.003 106.5)',
+        '--workspace-titlebar-toolbutton-active': 'oklch(0.3289 0.003 106.5)',
+        '--workspace-sidebar-divider': 'oklch(0.3184 0.0025 106.5)',
+        '--workspace-sidebar-section-border': 'oklch(0.3184 0.0025 106.5)',
+        '--workspace-sidebar-row-hover-bg': 'oklch(0.2789 0.003 106.5)',
+        '--workspace-sidebar-row-hover-border': 'oklch(0.3384 0.003 106.5)',
+        '--workspace-sidebar-row-active-bg': 'oklch(0.3089 0.004 106.5)',
+        '--workspace-sidebar-row-active-border': 'oklch(0.3684 0.004 106.5)',
+        '--workspace-sidebar-row-active-shadow': '0 14px 24px -22px rgba(0, 0, 0, 0.4)',
+        '--activity-card-bg': 'oklch(0.2679 0.0036 106.6427)',
+        '--activity-card-border': 'oklch(0.3484 0.0025 63.22)',
+        '--activity-card-divider': 'oklch(0.3184 0.0025 106.5)',
+        '--activity-card-header-hover': 'oklch(0.2989 0.003 106.5)',
+        '--activity-card-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.24), 0 2px 4px -1px rgba(0, 0, 0, 0.24)',
+        '--composer-shell-top': 'oklch(0.2779 0.0035 106.6)',
+        '--composer-shell-bottom': 'oklch(0.2779 0.0035 106.6)',
+        '--composer-shell-border': 'oklch(0.3584 0.003 100)',
+        '--composer-shell-border-focus': 'color-mix(in srgb, oklch(0.6724 0.1308 38.7559) 34%, oklch(0.3584 0.003 100))',
+        '--composer-shell-shadow':
+          '0 1px 3px 0 rgba(0, 0, 0, 0.28), 0 6px 18px -10px rgba(0, 0, 0, 0.4)',
+        '--composer-shell-shadow-focus':
+          '0 1px 3px 0 rgba(0, 0, 0, 0.28), 0 8px 22px -10px rgba(0, 0, 0, 0.46), 0 0 0 3px color-mix(in srgb, oklch(0.6724 0.1308 38.7559) 18%, transparent)',
+        '--composer-toolbar-border': 'oklch(0.3184 0.0025 106.5)',
+        '--composer-panel-bg': 'oklch(0.3085 0.0035 106.6039)',
+        '--composer-panel-border': 'oklch(0.3584 0.003 100)',
+        '--composer-panel-shadow':
+          '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 12px 28px -14px rgba(0, 0, 0, 0.5)',
+        '--composer-control-bg-hover': 'oklch(0.2989 0.003 106.5)',
+        '--composer-control-active-text': 'oklch(0.9211 0.004 106.4781)',
+        '--composer-send-start': 'oklch(0.6724 0.1308 38.7559)',
+        '--composer-send-end': 'oklch(0.6324 0.1308 38.7559)',
+        '--composer-send-foreground': 'oklch(1 0 0)',
+        '--composer-chip-border': 'oklch(0.3584 0.003 100)',
+        '--composer-chip-text': 'oklch(0.7213 0.014 99)',
+        '--composer-chip-hover': 'oklch(0.2989 0.003 106.5)',
+        '--composer-drop-bg': 'oklch(0.3089 0.004 106.5)'
+      }
+    },
+    terminal: {
+      light: createTerminalTheme({
+        background: 'oklch(0.9818 0.0054 95.0986)',
+        foreground: '#3d3929',
+        selectionBackground: 'rgba(201, 100, 66, 0.18)',
+        cursor: '#c96442',
+        black: '#3d3929',
+        red: '#b91c1c',
+        green: '#3f6212',
+        yellow: '#a16207',
+        blue: '#1d4ed8',
+        magenta: '#9333ea',
+        cyan: '#0e7490',
+        white: '#e8e6dc',
+        brightBlack: '#8f8b7a',
+        brightRed: '#dc2626',
+        brightGreen: '#4d7c0f',
+        brightYellow: '#ca8a04',
+        brightBlue: '#2563eb',
+        brightMagenta: '#a855f7',
+        brightCyan: '#0891b2',
+        brightWhite: '#faf9f4'
+      }),
+      dark: createTerminalTheme({
+        background: 'oklch(0.2213 0.0038 106.707)',
+        foreground: '#d9d5c5',
+        selectionBackground: 'rgba(224, 122, 82, 0.24)',
+        cursor: '#e07a52',
+        black: '#26241e',
+        red: '#f08080',
+        green: '#a3be8c',
+        yellow: '#e0b060',
+        blue: '#81a1c1',
+        magenta: '#c69ae0',
+        cyan: '#88c0d0',
+        white: '#d9d5c5',
+        brightBlack: '#7d7a6c',
+        brightRed: '#fca5a5',
+        brightGreen: '#b8d3a3',
+        brightYellow: '#ecc987',
+        brightBlue: '#9fb8d6',
+        brightMagenta: '#d9b8ec',
+        brightCyan: '#a3d3e0',
+        brightWhite: '#faf9f4'
+      })
+    },
+    ssh: {
+      light: {
+        libraryFrameStart: 'oklch(1 0 0)',
+        libraryFrameEnd: 'oklch(0.9649 0.004 100)',
+        libraryBorder: 'oklch(0.9101 0.003 106.46)',
+        libraryText: 'oklch(0.3438 0.0269 95.7226)',
+        connectFrame: 'oklch(0.9786 0.0027 106.45)',
+        connectBorder: 'oklch(0.8779 0.003 106.46)',
+        connectText: 'oklch(0.5259 0.012 97)',
+        terminalFrame: '#2b2822',
+        terminalBorder: 'rgba(255,255,255,0.08)',
+        terminalText: '#d9d5c5',
+        canvas: 'oklch(0.9786 0.0027 106.45)',
+        canvasSubtle: 'oklch(1 0 0)',
+        terminalCanvas: 'oklch(0.9818 0.0054 95.0986)',
+        panel: '#2b2822',
+        panelStrong: '#1f1d18',
+        panelBorder: 'rgba(255,255,255,0.08)',
+        surface: 'oklch(1 0 0)',
+        surfaceStrong: 'oklch(0.9786 0.0027 106.45)',
+        text: 'oklch(0.3438 0.0269 95.7226)',
+        muted: 'oklch(0.6059 0.0075 97.4233)',
+        accent: '#c96442',
+        accentSoft: 'oklch(0.9435 0.012 60)',
+        accentContrast: '#ffffff',
+        success: '#4d7c0f',
+        successSoft: '#f2f7e8',
+        warning: '#a16207',
+        warningSoft: '#fdf6e3',
+        danger: '#b91c1c',
+        dangerSoft: '#fdf0ef',
+        badge: '#c96442',
+        libraryPill: 'oklch(0.9341 0.0153 90.239)',
+        libraryPillActive: 'oklch(0.9139 0.011 92)',
+        libraryPillText: 'oklch(0.5259 0.012 97)',
+        libraryPillActiveText: 'oklch(0.3438 0.0269 95.7226)',
+        connectPill: 'oklch(0.9341 0.0153 90.239)',
+        connectPillActive: 'oklch(0.9139 0.011 92)',
+        connectPillText: 'oklch(0.5259 0.012 97)',
+        connectPillActiveText: 'oklch(0.3438 0.0269 95.7226)',
+        terminalPill: 'rgba(255,255,255,0.08)',
+        terminalPillActive: '#3a362d',
+        terminalPillText: '#cfcaba',
+        terminalPillActiveText: '#f5f2e8'
+      },
+      dark: {
+        libraryFrameStart: 'oklch(0.2303 0.002 106.56)',
+        libraryFrameEnd: 'oklch(0.2389 0.0019 106.54)',
+        libraryBorder: 'rgba(255,255,255,0.08)',
+        libraryText: 'oklch(0.8074 0.0142 93.0137)',
+        connectFrame: 'oklch(0.2303 0.002 106.56)',
+        connectBorder: 'oklch(0.3184 0.0025 106.5)',
+        connectText: 'oklch(0.7213 0.014 99)',
+        terminalFrame: '#1f1d18',
+        terminalBorder: 'rgba(255,255,255,0.08)',
+        terminalText: '#d9d5c5',
+        canvas: 'oklch(0.2303 0.002 106.56)',
+        canvasSubtle: 'oklch(0.2389 0.0019 106.54)',
+        terminalCanvas: '#1f1d18',
+        panel: 'oklch(0.2679 0.0036 106.6427)',
+        panelStrong: 'oklch(0.2389 0.0019 106.54)',
+        panelBorder: 'rgba(255,255,255,0.08)',
+        surface: 'oklch(0.2679 0.0036 106.6427)',
+        surfaceStrong: 'oklch(0.2889 0.003 106.5)',
+        text: 'oklch(0.8074 0.0142 93.0137)',
+        muted: 'oklch(0.7213 0.014 99)',
+        accent: '#e07a52',
+        accentSoft: 'oklch(0.3089 0.01 60)',
+        accentContrast: '#241209',
+        success: '#a3be8c',
+        successSoft: '#2a3122',
+        warning: '#e0b060',
+        warningSoft: '#332a18',
+        danger: '#f08080',
+        dangerSoft: '#33201d',
+        badge: '#e07a52',
+        libraryPill: 'rgba(255,255,255,0.08)',
+        libraryPillActive: 'rgba(255,255,255,0.14)',
+        libraryPillText: 'oklch(0.7713 0.0169 99.0657)',
+        libraryPillActiveText: '#ffffff',
+        connectPill: 'oklch(0.2679 0.0036 106.6427)',
+        connectPillActive: 'oklch(0.3089 0.004 106.5)',
+        connectPillText: 'oklch(0.7213 0.014 99)',
+        connectPillActiveText: 'oklch(0.9211 0.004 106.4781)',
+        terminalPill: 'rgba(255,255,255,0.08)',
+        terminalPillActive: '#3a362d',
+        terminalPillText: '#cfcaba',
+        terminalPillActiveText: '#f5f2e8'
+      }
+    }
+  },
   // Ported from the sidebar_agent extension palette (teal-green, soft borders,
   // generous whitespace). Light is the primary mode; dark mirrors the same hues.
   jade: {
@@ -1942,6 +2266,7 @@ const PRESET_DEFINITIONS: Record<AppThemePreset, ThemePresetDefinition> = {
 }
 
 const APP_THEME_PRESET_IDS: AppThemePreset[] = [
+  'paper',
   'jade',
   'mulberry',
   'studio',

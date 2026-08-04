@@ -221,6 +221,10 @@
       "globalHint": "Interface",
       "current": "Active",
       "presets": {
+        "paper": {
+          "label": "Warm Paper",
+          "desc": "A warm paper canvas with a terracotta primary, hairline borders and a soft shadow scale."
+        },
         "jade": {
           "label": "Jade Teal",
           "desc": "A calm teal workspace palette with soft borders and generous whitespace."
