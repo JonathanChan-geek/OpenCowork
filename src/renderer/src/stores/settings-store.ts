@@ -28,6 +28,7 @@ import {
   sanitizePermissionPolicy,
   type PermissionPolicy
 } from '../../../shared/permission-policy'
+import { FEATURES } from '../../../shared/feature-config'
 
 export interface ModelBinding {
   providerId: string
@@ -566,7 +567,7 @@ export const useSettingsStore = create<SettingsStore>()(
       leftSidebarWidth: LEFT_SIDEBAR_DEFAULT_WIDTH,
 
       // Web Search Settings
-      webSearchEnabled: false,
+      webSearchEnabled: FEATURES.webSearch,
       webSearchProvider: 'tavily',
       webSearchApiKey: '',
       webSearchEngine: 'google',
@@ -574,7 +575,7 @@ export const useSettingsStore = create<SettingsStore>()(
       webSearchTimeout: 30000,
 
       // CodeGraph Settings (opt-in standalone sidecar; default off)
-      codegraphEnabled: false,
+      codegraphEnabled: FEATURES.codeGraph,
       codegraphFullToolSurface: false,
 
       // Network Settings

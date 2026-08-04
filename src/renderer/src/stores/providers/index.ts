@@ -23,6 +23,7 @@ import { bigmodelCodingPreset, bigmodelPreset } from './bigmodel'
 import { volcenginePreset } from './volcengine'
 import { xaiPreset } from './x-ai'
 import type { BuiltinProviderPreset } from './types'
+import { FEATURES, KEPT_BUILTIN_PROVIDER_IDS } from '../../../../shared/feature-config'
 
 // Server-tool capabilities are per-model opt-ins that default to false: speaking the
 // anthropic/openai-responses protocol is not enough, since relay/aggregator endpoints
@@ -129,5 +130,15 @@ export const builtinProviderPresets: BuiltinProviderPreset[] = [
   volcenginePreset,
   xaiPreset
 ]
+  .filter((preset) => {
+    // KEPT_BUILTIN_PROVIDER_IDS excludes both OAuth coding presets, so the pruned catalog also honors FEATURES.aiCoding.
+    const aiCodingAllowed =
+      FEATURES.aiCoding ||
+      (preset.builtinId !== 'codex-oauth' && preset.builtinId !== 'copilot-oauth')
+    return (
+      (FEATURES.allBuiltinProviders || KEPT_BUILTIN_PROVIDER_IDS.has(preset.builtinId)) &&
+      aiCodingAllowed
+    )
+  })
   .map(applyServerToolCapabilityDefaults)
   .map(applyUltraReasoningTierDefault)

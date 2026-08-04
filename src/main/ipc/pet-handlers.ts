@@ -5,6 +5,7 @@ import { cp, mkdir, readdir, stat } from 'fs/promises'
 import { registerMessagePackHandler } from './messagepack-handler'
 import { safeSendMessagePackToAllWindows } from '../window-ipc'
 import { decodePersistedStoreState, readSettings, setSettingsValue } from './settings-handlers'
+import { FEATURES } from '../../shared/feature-config'
 
 const PET_WINDOW_HEIGHT = 380
 const PET_ENABLED_SETTINGS_KEY = 'petDesktopEnabled'
@@ -141,7 +142,7 @@ async function persistPetEnabled(enabled: boolean): Promise<void> {
 }
 
 export async function openPetWindow(): Promise<void> {
-  if (!deps || opening) return
+  if (!FEATURES.pet || !deps || opening) return
 
   if (isPetWindowOpen()) {
     petWindow?.showInactive()

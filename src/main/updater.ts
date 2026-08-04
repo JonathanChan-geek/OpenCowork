@@ -6,6 +6,7 @@ import { writeCrashLog } from './crash-logger'
 import { safeSendMessagePackToWindow } from './window-ipc'
 import { readSettings } from './ipc/settings-handlers'
 import { getUpdateDistributionInfo, isAutoInstallUpdateSupported } from './distribution'
+import { FEATURES } from '../shared/feature-config'
 
 type WindowGetter = () => BrowserWindow | null
 type QuitMarker = () => void
@@ -665,18 +666,20 @@ export function setupAutoUpdater(options: AutoUpdateOptions): void {
     console.log('[Updater] Auto update is disabled. Startup check will only notify.')
   }
 
-  // Check for updates immediately on startup
-  void checkForUpdatesSafely().catch((error) => {
-    if (isTransientUpdateError(error)) {
-      return
-    }
+  if (FEATURES.autoUpdate) {
+    // Check for updates immediately on startup
+    void checkForUpdatesSafely().catch((error) => {
+      if (isTransientUpdateError(error)) {
+        return
+      }
 
-    const message = formatErrorMessage(error)
-    if (!shouldReportUpdaterError(message)) {
-      return
-    }
+      const message = formatErrorMessage(error)
+      if (!shouldReportUpdaterError(message)) {
+        return
+      }
 
-    console.error('[Updater] checkForUpdates failed:', error)
-    writeCrashLog('updater_check_failed', { message, error })
-  })
+      console.error('[Updater] checkForUpdates failed:', error)
+      writeCrashLog('updater_check_failed', { message, error })
+    })
+  }
 }

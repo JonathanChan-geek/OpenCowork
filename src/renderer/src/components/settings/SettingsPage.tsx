@@ -142,6 +142,7 @@ import {
   OPEN_COWORK_RELEASES_LATEST_URL,
   type AppDistribution
 } from '../../../../shared/app-distribution'
+import { FEATURES } from '../../../../shared/feature-config'
 
 const DEFAULT_GLOBAL_MEMORY_TEMPLATES = {
   soul: '',
@@ -571,6 +572,20 @@ const menuGroupDefs: Array<{
     ]
   }
 ]
+
+const visibleMenuGroupDefs = menuGroupDefs
+  .filter((group) => FEATURES.aiCoding || group.labelKey !== 'page.groups.aiCoding')
+  .map((group) => ({
+    ...group,
+    items: group.items.filter(
+      (item) =>
+        (item.id !== 'pet' || FEATURES.pet) &&
+        (item.id !== 'codegraph' || FEATURES.codeGraph) &&
+        (item.id !== 'websearch' || FEATURES.webSearch) &&
+        (item.id !== 'skillsmarket' || FEATURES.skillsMarket)
+    )
+  }))
+  .filter((group) => group.items.length > 0)
 
 // ─── General Settings Panel ───
 
@@ -3943,7 +3958,7 @@ export function SettingsPage(): React.JSX.Element {
       <div className="flex min-h-0 flex-1">
         <div className="flex w-[236px] shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
           <nav className="flex-1 space-y-5 overflow-y-auto px-2.5 pb-2 pt-4">
-            {menuGroupDefs.map((group, groupIndex) => (
+            {visibleMenuGroupDefs.map((group, groupIndex) => (
               <motion.div
                 key={group.labelKey}
                 initial={animationsEnabled ? { opacity: 0, x: -6 } : false}

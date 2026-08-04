@@ -3,6 +3,7 @@ import { useStoreWithEqualityFn } from 'zustand/traditional'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import packageJson from '../../../../../package.json'
 import { useTranslation } from 'react-i18next'
+import { FEATURES } from '../../../../shared/feature-config'
 import {
   ArrowDownAZ,
   BookOpen,
@@ -1348,7 +1349,7 @@ export function WorkspaceSidebar(): React.JSX.Element {
       active: tasksPageOpen,
       onClick: () => useUIStore.getState().openTasksPage()
     }
-  ]
+  ].filter((item) => item.key !== 'draw' || FEATURES.draw)
 
   const renderNavItem = (item: (typeof navItems)[number]): React.JSX.Element => (
     <button
