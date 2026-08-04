@@ -37,6 +37,7 @@ import {
   Wallet
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { FEATURES } from '../../../../shared/feature-config'
 import { toast } from 'sonner'
 import { Badge } from '@renderer/components/ui/badge'
 import { Button } from '@renderer/components/ui/button'
@@ -78,7 +79,9 @@ interface InterestOption {
   soulId?: string
 }
 
-const STEPS: OnboardingStep[] = ['intro', 'language', 'nickname', 'interests', 'soul']
+const STEPS: OnboardingStep[] = FEATURES.languageSelector
+  ? ['intro', 'language', 'nickname', 'interests', 'soul']
+  : ['intro', 'nickname', 'interests', 'soul']
 const PROFILE_BLOCK_START = '<!-- OPEN_COWORK_ONBOARDING_PROFILE_START -->'
 const PROFILE_BLOCK_END = '<!-- OPEN_COWORK_ONBOARDING_PROFILE_END -->'
 
@@ -189,25 +192,27 @@ function BrandHeader({
   return (
     <header className="flex h-14 shrink-0 items-center justify-between px-5">
       <div className="text-base font-semibold text-foreground">OpenCoWork</div>
-      <Select
-        value={language}
-        onValueChange={(value) => onLanguageChange(value as OnboardingLanguage)}
-      >
-        <SelectTrigger
-          aria-label={t('onboarding.language.shortLabel')}
-          className="h-8 w-[118px] border-transparent bg-transparent text-xs shadow-none hover:bg-muted"
+      {FEATURES.languageSelector ? (
+        <Select
+          value={language}
+          onValueChange={(value) => onLanguageChange(value as OnboardingLanguage)}
         >
-          <Languages className="size-3.5 text-muted-foreground" />
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent align="end">
-          {LANGUAGE_OPTIONS.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+          <SelectTrigger
+            aria-label={t('onboarding.language.shortLabel')}
+            className="h-8 w-[118px] border-transparent bg-transparent text-xs shadow-none hover:bg-muted"
+          >
+            <Languages className="size-3.5 text-muted-foreground" />
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent align="end">
+            {LANGUAGE_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      ) : null}
     </header>
   )
 }
