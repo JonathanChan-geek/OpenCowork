@@ -62,6 +62,7 @@ import { registerConfigHandlers } from './ipc/secure-key-store'
 import { registerAiProviderHandlers } from './ipc/ai-provider-handlers'
 import { registerExtensionHandlers } from './ipc/extension-handlers'
 import { registerChannelHandlers, autoStartChannels } from './ipc/channel-handlers'
+import { FEATURES } from '../shared/feature-config'
 import { ChannelManager } from './channels/channel-manager'
 import { registerMcpHandlers } from './ipc/mcp-handlers'
 import { registerCronHandlers } from './ipc/cron-handlers'
@@ -688,6 +689,9 @@ function ensureDeferredIpcHandlers(): Promise<void> {
 let channelStartupPromise: Promise<void> | null = null
 
 function startChannelServices(): Promise<void> {
+  // Messaging channels are cut from the intranet distribution; IPC handlers stay
+  // registered so the renderer store keeps working against an empty channel list.
+  if (!FEATURES.channels) return Promise.resolve()
   channelStartupPromise ??= runLoggedStartupStepAsync('channel_services_startup', async () => {
     const { registerBuiltInChannelProviders } = await import('./channels/register-providers')
     registerBuiltInChannelProviders(channelManager)

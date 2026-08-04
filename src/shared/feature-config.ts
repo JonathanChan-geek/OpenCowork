@@ -15,6 +15,8 @@ export const FEATURES = {
   skillsMarket: false,
   /** Desktop pet settings panel and pet windows */
   pet: false,
+  /** Messaging channel plugins (Feishu/DingTalk/QQ/WeCom/Weixin/Discord/Telegram/WhatsApp): settings panel and channel services */
+  channels: false,
   /** Auto update check on startup (manual check button stays) */
   autoUpdate: false,
   /** Register the full builtin provider preset catalog; when false only KEPT_BUILTIN_PROVIDER_IDS remain */

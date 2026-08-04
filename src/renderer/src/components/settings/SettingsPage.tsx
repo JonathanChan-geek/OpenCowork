@@ -582,7 +582,8 @@ const visibleMenuGroupDefs = menuGroupDefs
         (item.id !== 'pet' || FEATURES.pet) &&
         (item.id !== 'codegraph' || FEATURES.codeGraph) &&
         (item.id !== 'websearch' || FEATURES.webSearch) &&
-        (item.id !== 'skillsmarket' || FEATURES.skillsMarket)
+        (item.id !== 'skillsmarket' || FEATURES.skillsMarket) &&
+        (item.id !== 'plugin' || FEATURES.channels)
     )
   }))
   .filter((group) => group.items.length > 0)
