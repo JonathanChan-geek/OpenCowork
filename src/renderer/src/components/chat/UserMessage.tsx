@@ -102,7 +102,7 @@ function ActionIconButton({
 
 const USER_MESSAGE_WIDTH_CLASS = 'w-full max-w-[min(82%,42rem)]'
 const USER_MESSAGE_BUBBLE_CLASS =
-  'rounded-[18px] border border-border/60 bg-muted/35 px-4 py-3 text-sm text-foreground shadow-sm dark:bg-muted/70'
+  'rounded-[18px] border border-primary/15 bg-accent px-4 py-3 text-sm text-foreground shadow-sm dark:border-primary/20'
 const SKILL_DIRECTIVE_RE = /^\s*\[Skill:\s*([^\]\n]+?)\s*\]\s*(?:\r?\n)?([\s\S]*)$/
 
 interface UserSkillDirective {

@@ -24,7 +24,9 @@ export const FEATURES = {
   /** Clarify / Code / ACP session modes; when false only Cowork (and standalone Chat) remain and the mode picker hides itself */
   extraModes: false,
   /** UI language selector; when false the UI is pinned to Simplified Chinese */
-  languageSelector: false
+  languageSelector: false,
+  /** AGENTS.md "/init" hints in composer placeholder and recommendations (coding workflow) */
+  agentsInitHint: false
 } as const
 
 /** builtinIds that survive when allBuiltinProviders is false */

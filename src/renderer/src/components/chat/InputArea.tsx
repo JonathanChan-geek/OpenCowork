@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useState as useLocalState } from 'react'
 import { toast } from 'sonner'
+import { FEATURES } from '../../../../shared/feature-config'
 import {
   Send,
   FolderOpen,
@@ -2298,7 +2299,8 @@ export function InputArea({
     [editorSelection, workingFolder]
   )
 
-  const shouldRecommendInit = workspaceReady && !activeSshConnectionId && isWorkspaceAgentsMissing
+  const shouldRecommendInit =
+    FEATURES.agentsInitHint && workspaceReady && !activeSshConnectionId && isWorkspaceAgentsMissing
   const recommendationFallback = shouldRecommendInit
     ? t('input.recommendationInitWorkspace')
     : t(defaultRecommendationKeys[mode])
