@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger
 } from '@renderer/components/ui/dropdown-menu'
 import { cn } from '@renderer/lib/utils'
+import { FEATURES } from '../../../../shared/feature-config'
 import type { AppMode } from '@renderer/stores/ui-store'
 
 export interface TitlebarModeOption {
@@ -62,9 +63,14 @@ export function getAvailableModeOptions(
   options: Array<TitlebarModeOption>,
   projectScoped: boolean
 ): Array<TitlebarModeOption> {
+  // The intranet distribution is cowork-first: without extraModes the project
+  // list collapses to cowork alone and the picker hides itself (length <= 1).
+  const enabled = FEATURES.extraModes
+    ? options
+    : options.filter((option) => option.value === 'chat' || option.value === 'cowork')
   return projectScoped
-    ? options.filter((option) => option.value !== 'chat')
-    : options.filter((option) => option.value === 'chat')
+    ? enabled.filter((option) => option.value !== 'chat')
+    : enabled.filter((option) => option.value === 'chat')
 }
 
 interface TitlebarModeSwitchProps {

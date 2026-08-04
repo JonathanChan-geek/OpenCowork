@@ -506,7 +506,7 @@ export const useSettingsStore = create<SettingsStore>()(
       theme: DEFAULT_THEME_MODE,
       themePreset: DEFAULT_APP_THEME_PRESET,
       sshTerminalThemePreset: DEFAULT_SSH_TERMINAL_THEME_PRESET,
-      language: detectSystemLanguage(),
+      language: FEATURES.languageSelector ? detectSystemLanguage() : 'zh',
       autoApprove: false,
       permissionPolicy: { ...DEFAULT_PERMISSION_POLICY },
       autoUpdateEnabled: true,
@@ -560,7 +560,7 @@ export const useSettingsStore = create<SettingsStore>()(
       // Appearance Settings
       backgroundColor: '',
       fontFamily: '',
-      fontSize: 16,
+      fontSize: 14,
       animationsEnabled: true,
       liveOutputAnimationStyle: 'agile',
       toolbarCollapsedByDefault: false,

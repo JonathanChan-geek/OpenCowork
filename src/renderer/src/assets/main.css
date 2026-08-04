@@ -377,12 +377,12 @@
   --composer-drop-bg: #e8e9ed;
   --composer-placeholder: color-mix(in srgb, var(--muted-foreground) 82%, transparent);
   --composer-suggestion: color-mix(in srgb, var(--muted-foreground) 54%, transparent);
-  --radius: 0.625rem;
+  --radius: 0.75rem;
   --app-background: var(--background);
   --app-font-family:
-    Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
-    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  --app-font-size: 16px;
+    'PingFang SC', 'Microsoft YaHei', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', sans-serif;
+  --app-font-size: 14px;
 }
 
 .dark {

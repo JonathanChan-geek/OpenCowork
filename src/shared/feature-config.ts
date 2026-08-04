@@ -20,7 +20,11 @@ export const FEATURES = {
   /** Auto update check on startup (manual check button stays) */
   autoUpdate: false,
   /** Register the full builtin provider preset catalog; when false only KEPT_BUILTIN_PROVIDER_IDS remain */
-  allBuiltinProviders: false
+  allBuiltinProviders: false,
+  /** Clarify / Code / ACP session modes; when false only Cowork (and standalone Chat) remain and the mode picker hides itself */
+  extraModes: false,
+  /** UI language selector; when false the UI is pinned to Simplified Chinese */
+  languageSelector: false
 } as const
 
 /** builtinIds that survive when allBuiltinProviders is false */

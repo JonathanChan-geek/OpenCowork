@@ -1254,32 +1254,36 @@ function GeneralPanel(): React.JSX.Element {
 
       <Separator />
 
-      {/* Language */}
-      <section className="space-y-3">
-        <div>
-          <label className="text-sm font-medium">{t('general.language')}</label>
-          <p className="text-xs text-muted-foreground">{t('general.languageDesc')}</p>
-        </div>
-        <Select
-          value={settings.language}
-          onValueChange={(v) =>
-            settings.updateSettings({ language: v as typeof settings.language })
-          }
-        >
-          <SelectTrigger className="w-60 text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {LANGUAGE_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value} className="text-xs">
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </section>
+      {/* Language (hidden when the distribution pins Simplified Chinese) */}
+      {FEATURES.languageSelector && (
+        <>
+          <section className="space-y-3">
+            <div>
+              <label className="text-sm font-medium">{t('general.language')}</label>
+              <p className="text-xs text-muted-foreground">{t('general.languageDesc')}</p>
+            </div>
+            <Select
+              value={settings.language}
+              onValueChange={(v) =>
+                settings.updateSettings({ language: v as typeof settings.language })
+              }
+            >
+              <SelectTrigger className="w-60 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {LANGUAGE_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value} className="text-xs">
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </section>
 
-      <Separator />
+          <Separator />
+        </>
+      )}
 
       {/* Tool Result Format */}
       <section className="space-y-3">
