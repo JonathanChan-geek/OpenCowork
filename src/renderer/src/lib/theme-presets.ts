@@ -213,11 +213,12 @@ const PRESET_DEFINITIONS: Record<AppThemePreset, ThemePresetDefinition> = {
         '--composer-shell-top': 'oklch(0.9903 0.0035 95)',
         '--composer-shell-bottom': 'oklch(0.9903 0.0035 95)',
         '--composer-shell-border': 'oklch(0.8879 0.004 106.46)',
-        '--composer-shell-border-focus': 'color-mix(in srgb, oklch(0.6171 0.1375 39.0427) 34%, oklch(0.8879 0.004 106.46))',
-        '--composer-shell-shadow':
-          '0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 4px 14px -8px rgba(80, 60, 20, 0.12)',
-        '--composer-shell-shadow-focus':
-          '0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 6px 18px -8px rgba(80, 60, 20, 0.16), 0 0 0 3px color-mix(in srgb, oklch(0.6171 0.1375 39.0427) 14%, transparent)',
+        '--composer-shell-border-focus': 'color-mix(in srgb, oklch(0.6171 0.1375 39.0427) 55%, oklch(0.8879 0.004 106.46))',
+        // No large-blur glow or spread ring: the shell has square bottom corners with a
+        // tray attached below, so anything projecting past the border draws a visible
+        // seam across the tray. Focus is signalled by the border color alone (DEEIX).
+        '--composer-shell-shadow': '0 1px 2px rgba(0, 0, 0, 0.06)',
+        '--composer-shell-shadow-focus': '0 1px 2px rgba(0, 0, 0, 0.06)',
         '--composer-toolbar-border': 'oklch(0.9309 0.006 95)',
         '--composer-panel-bg': 'oklch(1 0 0)',
         '--composer-panel-border': 'oklch(0.8879 0.004 106.46)',
@@ -288,11 +289,10 @@ const PRESET_DEFINITIONS: Record<AppThemePreset, ThemePresetDefinition> = {
         '--composer-shell-top': 'oklch(0.2779 0.0035 106.6)',
         '--composer-shell-bottom': 'oklch(0.2779 0.0035 106.6)',
         '--composer-shell-border': 'oklch(0.3584 0.003 100)',
-        '--composer-shell-border-focus': 'color-mix(in srgb, oklch(0.6724 0.1308 38.7559) 34%, oklch(0.3584 0.003 100))',
-        '--composer-shell-shadow':
-          '0 1px 3px 0 rgba(0, 0, 0, 0.28), 0 6px 18px -10px rgba(0, 0, 0, 0.4)',
-        '--composer-shell-shadow-focus':
-          '0 1px 3px 0 rgba(0, 0, 0, 0.28), 0 8px 22px -10px rgba(0, 0, 0, 0.46), 0 0 0 3px color-mix(in srgb, oklch(0.6724 0.1308 38.7559) 18%, transparent)',
+        '--composer-shell-border-focus': 'color-mix(in srgb, oklch(0.6724 0.1308 38.7559) 55%, oklch(0.3584 0.003 100))',
+        // Same rationale as light mode: hairline shadow only, focus via border color.
+        '--composer-shell-shadow': '0 1px 2px rgba(0, 0, 0, 0.3)',
+        '--composer-shell-shadow-focus': '0 1px 2px rgba(0, 0, 0, 0.3)',
         '--composer-toolbar-border': 'oklch(0.3184 0.0025 106.5)',
         '--composer-panel-bg': 'oklch(0.3085 0.0035 106.6039)',
         '--composer-panel-border': 'oklch(0.3584 0.003 100)',
