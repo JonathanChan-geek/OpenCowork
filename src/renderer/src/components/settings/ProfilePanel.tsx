@@ -640,7 +640,7 @@ export function ProfilePanel(): React.JSX.Element {
   )
   const profileName =
     (editing ? draftName : settings.userName).trim() ||
-    t('profile.defaultName', { defaultValue: 'OpenCowork User' })
+    t('profile.defaultName', { defaultValue: '千行用户' })
   const avatarUrl = (editing ? draftAvatar : settings.userAvatar).trim()
   const topModel = typeof models[0]?.model_name === 'string' ? models[0].model_name : null
   const topProvider =
@@ -823,7 +823,7 @@ export function ProfilePanel(): React.JSX.Element {
             <Input
               value={draftName}
               onChange={(event) => setDraftName(event.target.value)}
-              placeholder={t('profile.displayNamePlaceholder', { defaultValue: 'OpenCowork User' })}
+              placeholder={t('profile.displayNamePlaceholder', { defaultValue: '千行用户' })}
               className="text-sm"
             />
           </label>

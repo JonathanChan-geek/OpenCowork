@@ -335,7 +335,7 @@ function appendMemoryContext(
   if (sessionScope === 'main' && memoryUseMemories) {
     parts.push(
       `\n<memory_read_path_policy>`,
-      `OpenCowork memory is scoped. Global memory applies across projects; project memory applies only to the current workspace and takes priority when it conflicts with global memory.`,
+      `千行 (QianXing) memory is scoped. Global memory applies across projects; project memory applies only to the current workspace and takes priority when it conflicts with global memory.`,
       `Only summaries or small memory files are injected by default. Use MemoryList, MemoryRead, and MemorySearch when you need detailed memory provenance.`,
       `When relying on memory details from those tools, keep the scope and memoryRootId from the tool result with the cited fact so global memory and project memory are not confused.`,
       `</memory_read_path_policy>`

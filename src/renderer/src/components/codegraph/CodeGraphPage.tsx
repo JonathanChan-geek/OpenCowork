@@ -221,17 +221,17 @@ export function CodeGraphPage({
     const assetMessage =
       assetStatus.diagnostic === 'worker-missing'
         ? t('codegraphPage.workerMissing', {
-            defaultValue: 'The CodeGraph worker is missing. Reinstall or update OpenCowork.'
+            defaultValue: 'The CodeGraph worker is missing. Reinstall or update 千行.'
           })
         : assetStatus.diagnostic === 'core-library-missing'
           ? t('codegraphPage.coreLibraryMissing', {
               defaultValue:
-                'The tree-sitter runtime library is missing or invalid. Reinstall or update OpenCowork.'
+                'The tree-sitter runtime library is missing or invalid. Reinstall or update 千行.'
             })
           : assetStatus.diagnostic === 'language-grammars-missing'
             ? t('codegraphPage.languageGrammarsMissing', {
                 defaultValue:
-                  'No valid CodeGraph language grammars were found. Reinstall or update OpenCowork.'
+                  'No valid CodeGraph language grammars were found. Reinstall or update 千行.'
               })
             : t('codegraphPage.needsDownload')
     body = (

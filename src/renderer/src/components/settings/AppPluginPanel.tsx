@@ -835,17 +835,17 @@ export function AppPluginPanel(): React.JSX.Element {
                         : codegraphAsset?.diagnostic === 'core-library-missing'
                           ? t('plugin.codegraph.coreLibraryMissing', {
                               defaultValue:
-                                'The tree-sitter runtime library is missing or invalid. Reinstall or update OpenCowork.'
+                                'The tree-sitter runtime library is missing or invalid. Reinstall or update 千行.'
                             })
                           : codegraphAsset?.diagnostic === 'language-grammars-missing'
                             ? t('plugin.codegraph.languageGrammarsMissing', {
                                 defaultValue:
-                                  'No valid language grammar libraries were found. Reinstall or update OpenCowork.'
+                                  'No valid language grammar libraries were found. Reinstall or update 千行.'
                               })
                             : codegraphAsset?.diagnostic === 'invalid-grammar-files'
                               ? t('plugin.codegraph.invalidGrammarPackage', {
                                   defaultValue:
-                                    'Some CodeGraph grammar files are invalid. Reinstall or update OpenCowork.'
+                                    'Some CodeGraph grammar files are invalid. Reinstall or update 千行.'
                                 })
                               : t('plugin.codegraph.needsDownload')}
                     </p>

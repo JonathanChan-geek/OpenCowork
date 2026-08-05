@@ -162,7 +162,7 @@ This file captures durable user preferences and collaboration style.
 `,
   memory: `# MEMORY.md
 
-This file stores global durable memory shared across OpenCowork sessions.
+This file stores global durable memory shared across 千行 sessions.
 
 ## Stable Preferences
 - Add user preferences that should persist across projects.
@@ -3837,7 +3837,7 @@ function AboutPanel(): React.JSX.Element {
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                 {t('about.heroTagline')}
               </p>
-              <h3 className="text-2xl font-semibold text-foreground">OpenCowork</h3>
+              <h3 className="text-2xl font-semibold text-foreground">千行</h3>
               <p className="text-sm text-muted-foreground">{t('about.heroDescription')}</p>
             </div>
           </div>

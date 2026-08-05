@@ -450,7 +450,7 @@ export function SshTerminalStatusPanel({
               <p className="mt-2 text-[12px] leading-6" style={{ color: FS.muted }}>
                 {t('workspace.terminalStatus.installBody', {
                   defaultValue:
-                    'Deploy the remote collector to ~/.open-cowork/xterminal, then OpenCowork will read output.stats on demand.'
+                    'Deploy the remote collector to ~/.open-cowork/xterminal, then 千行 will read output.stats on demand.'
                 })}
               </p>
               {error ? (

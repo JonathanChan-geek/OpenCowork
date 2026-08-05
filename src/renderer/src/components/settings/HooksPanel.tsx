@@ -117,7 +117,7 @@ export function HooksPanel(): React.JSX.Element {
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             {t('hooks.subtitle', {
-              defaultValue: 'Manage OpenCowork lifecycle hooks.'
+              defaultValue: 'Manage 千行 lifecycle hooks.'
             })}
           </p>
         </div>
@@ -162,18 +162,18 @@ export function HooksPanel(): React.JSX.Element {
             </div>
             <p className="mt-1 text-sm text-muted-foreground">
               {t('hooks.feature.description', {
-                defaultValue: 'Takes effect after restarting OpenCowork.'
+                defaultValue: 'Takes effect after restarting 千行.'
               })}
             </p>
             {restartRequired && (
               <p className="mt-2 text-xs font-medium text-amber-700 dark:text-amber-300">
                 {hooksEnabled
                   ? t('hooks.feature.restartToEnable', {
-                      defaultValue: 'Restart OpenCowork to start running hooks.'
+                      defaultValue: 'Restart 千行 to start running hooks.'
                     })
                   : t('hooks.feature.restartToDisable', {
                       defaultValue:
-                        'Hooks remain active in this app session. Restart OpenCowork to stop running them.'
+                        'Hooks remain active in this app session. Restart 千行 to stop running them.'
                     })}
               </p>
             )}

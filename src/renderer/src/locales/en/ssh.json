@@ -276,7 +276,7 @@
     "optional": "Optional",
     "hostPreview": "SSH host preview will appear here.",
     "connectingTitle": "Are you sure you want to connect?",
-    "connectingBody": "OpenCowork is preparing the secure transport, authenticating your host profile, and waiting for the remote shell to become interactive.",
+    "connectingBody": "千行 is preparing the secure transport, authenticating your host profile, and waiting for the remote shell to become interactive.",
     "connectingHint": "You can leave this screen open or return to the host list while the session finishes dialing.",
     "connectFailedTitle": "Connection could not complete.",
     "connectFailedBody": "The SSH client returned an error before the shell opened. You can review the logs or retry the connection.",

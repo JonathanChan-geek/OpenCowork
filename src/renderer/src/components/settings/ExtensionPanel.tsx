@@ -638,7 +638,7 @@ export function ExtensionPanel(): React.JSX.Element {
           <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
             {t('extension.emptyDesc', {
               defaultValue:
-                'Choose a folder containing extension.json to add custom tools to OpenCowork.'
+                'Choose a folder containing extension.json to add custom tools to 千行.'
             })}
           </p>
         </div>

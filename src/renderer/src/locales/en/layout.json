@@ -1,6 +1,6 @@
 {
   "sidebar": {
-    "openCowork": "OpenCowork",
+    "openCowork": "千行",
     "conversations": "Conversations",
     "newConversation": "New conversation (Ctrl+N)",
     "exportAll": "Export all conversations",
@@ -779,10 +779,10 @@
     "back": "Back",
     "pluginDisabled": "CodeGraph is disabled. Enable the plugin in Settings → Plugins first.",
     "openSettings": "Open Settings",
-    "needsDownload": "The built-in CodeGraph grammars are missing. Reinstall or update OpenCowork.",
-    "workerMissing": "The CodeGraph worker is missing. Reinstall or update OpenCowork.",
-    "coreLibraryMissing": "The tree-sitter runtime library is missing or invalid. Reinstall or update OpenCowork.",
-    "languageGrammarsMissing": "No valid CodeGraph language grammars were found. Reinstall or update OpenCowork.",
+    "needsDownload": "The built-in CodeGraph grammars are missing. Reinstall or update 千行.",
+    "workerMissing": "The CodeGraph worker is missing. Reinstall or update 千行.",
+    "coreLibraryMissing": "The tree-sitter runtime library is missing or invalid. Reinstall or update 千行.",
+    "languageGrammarsMissing": "No valid CodeGraph language grammars were found. Reinstall or update 千行.",
     "selectProject": "Project",
     "addFolder": "Index a folder",
     "refresh": "Refresh",

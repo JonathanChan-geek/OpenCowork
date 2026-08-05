@@ -52,7 +52,7 @@ This file captures durable user preferences and collaboration style.
 
 const GLOBAL_MEMORY_TEMPLATE = `# MEMORY.md
 
-This file stores global durable memory shared across OpenCowork sessions.
+This file stores global durable memory shared across 千行 sessions.
 
 ## Stable Preferences
 
@@ -525,7 +525,7 @@ function buildStage1Prompts(args: {
   sessionId: string
 }): { systemPrompt: string; userPrompt: string } {
   const systemPrompt = [
-    'You are the OpenCowork implementation of Codex memory Phase 1.',
+    'You are the 千行 (QianXing) implementation of Codex memory Phase 1.',
     'Extract raw memory signals from a completed MAIN session. Return strict JSON only.',
     'Schema: {"scope_outputs":[{"scope":"global|project","raw_memory":"markdown bullets","rollout_summary":"short markdown summary","rollout_slug":"short-slug"}]}.',
     'Use scope=global only for stable cross-project user preferences, collaboration habits, and recurring mistakes that apply broadly.',
@@ -833,7 +833,7 @@ function buildConsolidationPrompt(args: {
   rawMemoriesMarkdown: string
 }): string {
   return [
-    'You are the OpenCowork implementation of Codex memory Phase 2 consolidation.',
+    'You are the 千行 (QianXing) implementation of Codex memory Phase 2 consolidation.',
     'Consolidate raw memories into durable Markdown files for exactly one memory root.',
     `Root scope: ${args.root.scope}. Root id: ${args.root.id}.`,
     args.root.scope === 'project'

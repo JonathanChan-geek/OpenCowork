@@ -2,7 +2,7 @@
   "page": {
     "title": "设置",
     "subtitle": "偏好与模型设置",
-    "poweredBy": "Powered by OpenCowork",
+    "poweredBy": "Powered by 千行",
     "groups": {
       "foundation": "基础",
       "system": "系统",
@@ -58,18 +58,18 @@
   },
   "hooks": {
     "title": "钩子",
-    "subtitle": "管理 OpenCowork 生命周期钩子。",
+    "subtitle": "管理千行生命周期钩子。",
     "loading": "正在加载钩子...",
     "empty": "还没有配置钩子。",
     "emptyForEvent": "这个生命周期事件还没有配置钩子。",
     "feature": {
       "title": "启用钩子",
       "preview": "预览版",
-      "description": "重启 OpenCowork 后生效。",
+      "description": "重启千行后生效。",
       "runtimeOn": "本次启动中生效",
       "runtimeOff": "本次启动中未生效",
-      "restartToEnable": "重启 OpenCowork 后开始运行钩子。",
-      "restartToDisable": "本次启动中钩子仍会运行。重启 OpenCowork 后停止运行钩子。"
+      "restartToEnable": "重启千行后开始运行钩子。",
+      "restartToDisable": "本次启动中钩子仍会运行。重启千行后停止运行钩子。"
     },
     "source": {
       "exists": "已找到",
@@ -148,13 +148,13 @@
   "profile": {
     "title": "个人资料",
     "subtitle": "本地身份与 Token 活动",
-    "defaultName": "OpenCowork 用户",
+    "defaultName": "千行用户",
     "localAccount": "本地资料",
     "edit": "编辑",
     "save": "保存",
     "cancel": "取消",
     "displayName": "显示名称",
-    "displayNamePlaceholder": "OpenCowork 用户",
+    "displayNamePlaceholder": "千行用户",
     "chooseAvatar": "选择头像",
     "removeAvatar": "移除头像",
     "avatarInvalid": "请选择图片文件。",
@@ -390,7 +390,7 @@
   },
   "sync": {
     "title": "同步",
-    "subtitle": "通过 WebDAV 进行 OpenCowork 数据记录级同步。",
+    "subtitle": "通过 WebDAV 进行千行数据记录级同步。",
     "loading": "正在加载同步设置...",
     "provider": {
       "title": "同步提供商",
@@ -455,7 +455,7 @@
     "shell": {
       "endpoint": {
         "title": "Shell 执行端",
-        "desc": "选择 OpenCowork 在 Bash 工具调用中使用哪个 shell。可选项会根据当前操作系统过滤。",
+        "desc": "选择千行在 Bash 工具调用中使用哪个 shell。可选项会根据当前操作系统过滤。",
         "selectLabel": "可用 Shell",
         "options": {
           "auto": {
@@ -814,9 +814,9 @@
       "cookiesImported": "已从 {{browserName}} 导入 {{imported}} 条 Cookie（跳过 {{skipped}} 条）",
       "cookiesImportFailed": "导入 Cookie 失败",
       "userDataReuse": "模拟本机浏览器 Profile",
-      "userDataReuseDesc": "默认开启。内置浏览器会使用所选浏览器的身份，同时将 OpenCowork 存储保持在隔离目录，避免写入本机浏览器数据。",
+      "userDataReuseDesc": "默认开启。内置浏览器会使用所选浏览器的身份，同时将千行存储保持在隔离目录，避免写入本机浏览器数据。",
       "userDataSource": "浏览器数据来源",
-      "userDataSourceDesc": "选择 OpenCowork 优先尝试复用哪一个已安装浏览器的 Profile。",
+      "userDataSourceDesc": "选择千行优先尝试复用哪一个已安装浏览器的 Profile。",
       "sources": {
         "auto": "自动检测",
         "chrome": "Google Chrome",
@@ -825,9 +825,9 @@
         "chromium": "Chromium"
       },
       "activeProfile": "检测到的来源 Profile：{{browserName}} / {{profileName}} — {{path}}",
-      "profileFallback": "未检测到所选来源的 Profile，当前使用 OpenCowork 自己的浏览器身份。",
+      "profileFallback": "未检测到所选来源的 Profile，当前使用千行自己的浏览器身份。",
       "isolatedStorage": "隔离存储目录：{{path}}",
-      "restartRequired": "重启 OpenCowork 后，此浏览器 Profile 模式才会完全生效。",
+      "restartRequired": "重启千行后，此浏览器 Profile 模式才会完全生效。",
       "blockedDomains": "禁止访问域名",
       "blockedDomainsDesc": "命中的域名及其子域名会被拒绝导航。",
       "allowedDomains": "允许访问域名",
@@ -844,13 +844,13 @@
       "missingLanguages": "不可用语言：{{languages}}",
       "invalidFiles": "无效语法文件：{{files}}",
       "unrecognizedGrammars": "无法识别的语法库：{{grammars}}",
-      "coreLibraryMissing": "tree-sitter 核心运行库缺失或无效，请重新安装或更新 OpenCowork。",
-      "languageGrammarsMissing": "未找到有效的语言语法库，请重新安装或更新 OpenCowork。",
-      "invalidGrammarPackage": "部分 CodeGraph 语法文件无效，请重新安装或更新 OpenCowork。",
+      "coreLibraryMissing": "tree-sitter 核心运行库缺失或无效，请重新安装或更新千行。",
+      "languageGrammarsMissing": "未找到有效的语言语法库，请重新安装或更新千行。",
+      "invalidGrammarPackage": "部分 CodeGraph 语法文件无效，请重新安装或更新千行。",
       "remove": "移除",
       "removed": "已移除下载的语法。",
       "needsDownload": "尚未安装语法。下载后即可开始索引。",
-      "workerMissing": "未找到 CodeGraph worker 二进制。请先用 `npm run codegraph:publish`（或 `dotnet build sidecars/codegraph/OpenCowork.CodeGraph.Worker`）构建。",
+      "workerMissing": "未找到 CodeGraph worker 二进制。请先用 `npm run codegraph:publish`（或 `dotnet build sidecars/codegraph/千行.CodeGraph.Worker`）构建。",
       "download": "下载语法包",
       "downloading": "下载中…",
       "downloaded": "语法包已下载。",
@@ -904,7 +904,7 @@
   },
   "migration": {
     "title": "迁移中心",
-    "subtitle": "预览并迁移 OpenCode 配置到 OpenCowork",
+    "subtitle": "预览并迁移 OpenCode 配置到千行",
     "sourceTitle": "OpenCode 迁移源",
     "sourceDesc": "当前仅支持读取 ~/.config/opencode/opencode.json，并迁移 provider、模型选择、commands、agents、MCP 和 instructions。",
     "reloadAction": "重新预览",
@@ -968,7 +968,7 @@
     "framework": "框架",
     "ui": "UI",
     "license": "许可证",
-    "description": "OpenCowork 是一个开源的 AI 协作平台，支持多种大语言模型提供商。",
+    "description": "千行是一个开源的 AI 协作平台，支持多种大语言模型提供商。",
     "github": "GitHub",
     "heroTagline": "AI 协作工作台",
     "heroDescription": "在同一个桌面原生体验中协调多模型、智能体与技能。",
@@ -990,7 +990,7 @@
         "desc": "无缝连接 MCP 服务器、Skills 与第三方聊天频道。"
       }
     },
-    "summary": "OpenCowork 将多模型工作流、MCP 服务器、Skills 与自定义聊天频道统一在一个桌面体验里，你可以在 Chat / Cowork / Code 模式间自由切换，并保持对所有数据的本地掌控。"
+    "summary": "千行将多模型工作流、MCP 服务器、Skills 与自定义聊天频道统一在一个桌面体验里，你可以在 Chat / Cowork / Code 模式间自由切换，并保持对所有数据的本地掌控。"
   },
   "dialog": {
     "title": "快速设置",
@@ -1693,7 +1693,7 @@
     "installed": "插件已安装",
     "loading": "正在加载插件...",
     "emptyTitle": "尚未安装自定义插件",
-    "emptyDesc": "选择包含 extension.json 的文件夹，为 OpenCowork 添加自定义工具。",
+    "emptyDesc": "选择包含 extension.json 的文件夹，为千行添加自定义工具。",
     "noRenderers": "无自定义渲染器",
     "syncWarnings": "部分打包资源未同步",
     "bundled": "打包资源",

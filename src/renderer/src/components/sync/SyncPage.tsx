@@ -267,7 +267,7 @@ export function SyncPage(): React.JSX.Element {
             </div>
             <p className="max-w-2xl text-sm text-muted-foreground">
               {t('sync.subtitle', {
-                defaultValue: 'Record-level OpenCowork data sync with WebDAV.'
+                defaultValue: 'Record-level 千行 data sync with WebDAV.'
               })}
             </p>
           </div>

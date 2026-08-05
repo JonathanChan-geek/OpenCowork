@@ -1,6 +1,6 @@
 import packageJson from '../../../../../package.json'
 
-const APP_NAME = 'OpenCowork'
+const APP_NAME = 'QianXing'
 const packageVersion = typeof packageJson.version === 'string' ? packageJson.version.trim() : ''
 const DEFAULT_API_USER_AGENT = packageVersion ? `${APP_NAME}/${packageVersion}` : APP_NAME
 
