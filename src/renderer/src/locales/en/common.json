@@ -127,28 +127,37 @@
       "subtitle": "This is stored locally and written into USER.md so agents can address you naturally.",
       "placeholder": "Your nickname"
     },
+    "workplace": {
+      "title": "Where do you work, and in what role?",
+      "subtitle": "Optional. This stays local and is written into USER.md so agents know your working context from the first message.",
+      "hint": "Leave anything blank if you prefer — you can always edit USER.md later.",
+      "fields": {
+        "organization": {
+          "label": "Organization",
+          "placeholder": "e.g. XX Power Supply Company"
+        },
+        "department": {
+          "label": "Department",
+          "placeholder": "e.g. Marketing Dept / XX Power Supply Station"
+        },
+        "jobTitle": {
+          "label": "Position",
+          "placeholder": "e.g. Station Area Manager / Counter Clerk"
+        }
+      }
+    },
     "interests": {
-      "title": "What areas are you interested in?",
-      "subtitle": "Pick one or more. OpenCoWork uses this to choose better defaults and personalize your local profile.",
+      "title": "Which professional lines does your work belong to?",
+      "subtitle": "Pick one or more. OpenCoWork uses this to choose a better default persona and configuration.",
       "options": {
-        "content": "Content creation",
-        "coding": "Coding and development",
-        "design": "Design and creativity",
-        "learning": "Learning and research",
-        "business": "Business strategy",
-        "marketing": "Marketing and growth",
-        "product": "Product management",
-        "sales": "Sales and customers",
-        "operations": "Operations and admin",
-        "hr": "People and HR",
-        "financeLaw": "Finance and legal",
-        "creatorEconomy": "Creator economy",
-        "investment": "Investing and finance",
-        "family": "Family and parenting",
-        "health": "Health and habits",
-        "culture": "Hobbies and culture",
-        "personal": "Personal life",
-        "other": "Other areas"
+        "marketingCounter": "Marketing and customer service",
+        "stationManager": "Station areas and power supply stations",
+        "dispatchOm": "Dispatch, operation and maintenance",
+        "officeAdmin": "Office administration and documents",
+        "ledgerReport": "Ledgers and reports",
+        "dataAnalysis": "Data analysis and metrics",
+        "digitalDev": "Digitalization and development",
+        "safetyCapital": "Safety / infrastructure / materials"
       }
     },
     "soul": {
@@ -168,6 +177,34 @@
   },
   "builtinSouls": {
     "templates": {
+      "grid-general-collaborator": {
+        "name": "Grid General Collaborator",
+        "description": "A steady default persona covering safety supervision, infrastructure, materials, and other professional lines."
+      },
+      "grid-marketing-assistant": {
+        "name": "Marketing & Customer Service Assistant",
+        "description": "A persona for counter clerks and customer service: accurate policy citations, clean switching between customer-facing and internal tones."
+      },
+      "grid-station-manager": {
+        "name": "Station Area Manager Assistant",
+        "description": "A seasoned partner for line-loss control, collection workflows, and reporting — fewer forms, fewer trips, fewer blames."
+      },
+      "grid-dispatch-partner": {
+        "name": "Dispatch & Maintenance Partner",
+        "description": "The most conservative persona: every equipment or grid state judgment cites its data source; never drafts switching orders."
+      },
+      "grid-document-officer": {
+        "name": "Official Document Officer",
+        "description": "A document persona that gets genre, structure, and register right the first time; citations always carry document numbers."
+      },
+      "grid-ledger-keeper": {
+        "name": "Ledger Keeper",
+        "description": "A form-respecting persona: describe the sheet first, touch only target cells, report a diff afterwards."
+      },
+      "grid-data-analyst": {
+        "name": "Data Analyst",
+        "description": "Aligns metric definitions before producing numbers; layered anomaly attribution; every key figure traceable."
+      },
       "balanced-collaborator": {
         "name": "Balanced Professional Collaborator",
         "description": "A steady default persona for mixed daily work, thoughtful discussion, and general assistance."
@@ -194,6 +231,7 @@
       }
     },
     "categories": {
+      "grid": "power grid",
       "general": "general",
       "coding": "coding",
       "daily": "daily",
@@ -202,6 +240,20 @@
       "business": "business"
     },
     "tags": {
+      "safety-supervision": "safety supervision",
+      "infrastructure": "infrastructure",
+      "materials": "materials",
+      "customer-service": "customer service",
+      "billing-policy": "billing policy",
+      "station-area": "station area",
+      "line-loss": "line loss",
+      "dispatch": "dispatch",
+      "maintenance": "maintenance",
+      "official-document": "official document",
+      "ledger": "ledger",
+      "reporting": "reporting",
+      "metrics": "metrics",
+      "data-query": "data query",
       "daily": "daily",
       "balanced": "balanced",
       "clear": "clear",

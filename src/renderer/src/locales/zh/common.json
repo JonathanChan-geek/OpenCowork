@@ -99,7 +99,7 @@
     "back": "上一步",
     "intro": {
       "title": "你好，欢迎使用 OpenCoWork",
-      "subtitle": "OpenCoWork 是一个本地优先的多 Agent AI 协作工作台。它可以理解你的项目上下文，在授权下使用本地工具，并让 Agent 在编程、研究、计划和日常流程中与你一起工作。",
+      "subtitle": "OpenCoWork 是一个本地优先的 AI 协作工作台。它可以理解你的工作上下文，在授权下使用本地工具，并让 Agent 在业务办理、公文报表、数据分析和日常流程中与你一起工作。",
       "points": {
         "local": {
           "title": "本地工具，真实上下文",
@@ -127,28 +127,37 @@
       "subtitle": "昵称会保存在本地，并写入 USER.md，方便 Agent 更自然地与你协作。",
       "placeholder": "你的昵称"
     },
+    "workplace": {
+      "title": "你在哪个单位、什么岗位？",
+      "subtitle": "选填。岗位信息只保存在本地并写入 USER.md，Agent 会从第一句话就知道该按什么口径帮你干活。",
+      "hint": "不方便填的可以留空，之后随时可以在 USER.md 中补充或修改。",
+      "fields": {
+        "organization": {
+          "label": "单位",
+          "placeholder": "例如：××供电公司"
+        },
+        "department": {
+          "label": "部门",
+          "placeholder": "例如：营销部 / ××供电所"
+        },
+        "jobTitle": {
+          "label": "岗位",
+          "placeholder": "例如：台区经理 / 综合柜员"
+        }
+      }
+    },
     "interests": {
-      "title": "你感兴趣的领域有哪些？",
-      "subtitle": "可多选。OpenCoWork 会用它来选择更合适的默认配置，并写入你的本地资料。",
+      "title": "你的工作属于哪些专业条线？",
+      "subtitle": "可多选。OpenCoWork 会据此选择更合适的默认人格与配置，并写入你的本地资料。",
       "options": {
-        "content": "内容创作",
-        "coding": "编程与开发",
-        "design": "设计与创意",
-        "learning": "学习与研究",
-        "business": "商业与战略",
-        "marketing": "市场与增长",
-        "product": "产品与管理",
-        "sales": "销售与客户",
-        "operations": "运营与行政",
-        "hr": "人事与人力资源",
-        "financeLaw": "金融与法律",
-        "creatorEconomy": "创作者经济",
-        "investment": "投资与财经",
-        "family": "家庭与育儿",
-        "health": "健康与习惯",
-        "culture": "爱好与文化",
-        "personal": "个人生活",
-        "other": "其他领域"
+        "marketingCounter": "营销与客户服务",
+        "stationManager": "台区与供电所",
+        "dispatchOm": "调度与运检",
+        "officeAdmin": "综合办公与公文",
+        "ledgerReport": "台账与报表",
+        "dataAnalysis": "数据分析与问数",
+        "digitalDev": "数字化与开发",
+        "safetyCapital": "安监 / 基建 / 物资"
       }
     },
     "soul": {
@@ -168,6 +177,34 @@
   },
   "builtinSouls": {
     "templates": {
+      "grid-general-collaborator": {
+        "name": "电网通用协作者",
+        "description": "覆盖安监、基建、物资及其他专业条线的稳健默认人格，清单化办事，口径有脚注。"
+      },
+      "grid-marketing-assistant": {
+        "name": "营销客服助手",
+        "description": "面向营业厅柜员与客服的人格：业务口径准确，对客户与对内两副面孔切换干净。"
+      },
+      "grid-station-manager": {
+        "name": "台区经理助手",
+        "description": "懂线损治理、催费停复电与各类填报的老搭档，帮台区经理少填表、少跑腿、少背锅。"
+      },
+      "grid-dispatch-partner": {
+        "name": "调度运检伙伴",
+        "description": "最保守的人格：设备与电网状态判断一律标注数据来源，绝不代写操作票。"
+      },
+      "grid-document-officer": {
+        "name": "公文写作专员",
+        "description": "文种、结构、语体一次到位的公文人格：动笔前三问，引文带文号，绝不编造。"
+      },
+      "grid-ledger-keeper": {
+        "name": "台账管家",
+        "description": "敬畏原表的填报人格：先描述表结构、只动目标单元格、改完报 diff。"
+      },
+      "grid-data-analyst": {
+        "name": "数据分析师",
+        "description": "先对齐指标口径再出数，异动归因分层排查，每个关键数字可追溯。"
+      },
       "balanced-collaborator": {
         "name": "平衡型专业协作者",
         "description": "适合混合日常工作、深度讨论与通用协助的稳定默认人格。"
@@ -194,6 +231,7 @@
       }
     },
     "categories": {
+      "grid": "电网",
       "general": "通用",
       "coding": "编程",
       "daily": "日常",
@@ -202,6 +240,20 @@
       "business": "商业"
     },
     "tags": {
+      "safety-supervision": "安监",
+      "infrastructure": "基建",
+      "materials": "物资",
+      "customer-service": "客户服务",
+      "billing-policy": "电价口径",
+      "station-area": "台区",
+      "line-loss": "线损",
+      "dispatch": "调度",
+      "maintenance": "运检",
+      "official-document": "公文",
+      "ledger": "台账",
+      "reporting": "报表",
+      "metrics": "指标口径",
+      "data-query": "问数",
       "daily": "日常",
       "balanced": "平衡",
       "clear": "清晰",

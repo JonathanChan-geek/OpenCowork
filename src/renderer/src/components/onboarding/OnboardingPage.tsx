@@ -12,29 +12,23 @@ import {
   ArrowRight,
   BadgeCheck,
   BarChart3,
-  BookOpen,
   BrainCircuit,
-  Briefcase,
+  Building2,
   Check,
   Code2,
-  Compass,
-  GraduationCap,
+  FileText,
   Handshake,
-  Heart,
-  HeartPulse,
-  Home,
+  HardHat,
   Languages,
   Loader2,
-  Megaphone,
-  Palette,
+  MapPin,
   PenLine,
-  Scale,
   Send,
   ShieldCheck,
   Sparkles,
-  Target,
+  Table,
   Users,
-  Wallet
+  Zap
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { FEATURES } from '../../../../shared/feature-config'
@@ -70,8 +64,9 @@ import {
   DEFAULT_BUILTIN_SOUL_TEMPLATE_ID,
   type BuiltinSoulTemplateWithContent
 } from '../../../../shared/builtin-souls'
+import { applyInterestPresets } from '@renderer/lib/onboarding/interest-presets'
 
-type OnboardingStep = 'intro' | 'language' | 'nickname' | 'interests' | 'soul'
+type OnboardingStep = 'intro' | 'language' | 'nickname' | 'workplace' | 'interests' | 'soul'
 
 interface InterestOption {
   id: string
@@ -80,30 +75,20 @@ interface InterestOption {
 }
 
 const STEPS: OnboardingStep[] = FEATURES.languageSelector
-  ? ['intro', 'language', 'nickname', 'interests', 'soul']
-  : ['intro', 'nickname', 'interests', 'soul']
+  ? ['intro', 'language', 'nickname', 'workplace', 'interests', 'soul']
+  : ['intro', 'nickname', 'workplace', 'interests', 'soul']
 const PROFILE_BLOCK_START = '<!-- OPEN_COWORK_ONBOARDING_PROFILE_START -->'
 const PROFILE_BLOCK_END = '<!-- OPEN_COWORK_ONBOARDING_PROFILE_END -->'
 
 const INTEREST_OPTIONS: InterestOption[] = [
-  { id: 'content', icon: PenLine, soulId: 'research-writing-strategist' },
-  { id: 'coding', icon: Code2, soulId: 'senior-engineering-partner' },
-  { id: 'design', icon: Palette },
-  { id: 'learning', icon: GraduationCap, soulId: 'research-writing-strategist' },
-  { id: 'business', icon: Briefcase, soulId: 'product-strategy-operator' },
-  { id: 'marketing', icon: Megaphone, soulId: 'product-strategy-operator' },
-  { id: 'product', icon: Target, soulId: 'product-strategy-operator' },
-  { id: 'sales', icon: Handshake, soulId: 'product-strategy-operator' },
-  { id: 'operations', icon: Compass, soulId: 'daily-life-assistant' },
-  { id: 'hr', icon: Users, soulId: 'daily-life-assistant' },
-  { id: 'financeLaw', icon: Scale, soulId: 'research-writing-strategist' },
-  { id: 'creatorEconomy', icon: Wallet, soulId: 'product-strategy-operator' },
-  { id: 'investment', icon: BarChart3, soulId: 'research-writing-strategist' },
-  { id: 'family', icon: Home, soulId: 'emotionally-attuned-companion' },
-  { id: 'health', icon: HeartPulse, soulId: 'daily-life-assistant' },
-  { id: 'culture', icon: Heart, soulId: 'emotionally-attuned-companion' },
-  { id: 'personal', icon: Home, soulId: 'daily-life-assistant' },
-  { id: 'other', icon: BookOpen, soulId: 'balanced-collaborator' }
+  { id: 'marketingCounter', icon: Handshake, soulId: 'grid-marketing-assistant' },
+  { id: 'stationManager', icon: MapPin, soulId: 'grid-station-manager' },
+  { id: 'dispatchOm', icon: Zap, soulId: 'grid-dispatch-partner' },
+  { id: 'officeAdmin', icon: FileText, soulId: 'grid-document-officer' },
+  { id: 'ledgerReport', icon: Table, soulId: 'grid-ledger-keeper' },
+  { id: 'dataAnalysis', icon: BarChart3, soulId: 'grid-data-analyst' },
+  { id: 'digitalDev', icon: Code2, soulId: 'senior-engineering-partner' },
+  { id: 'safetyCapital', icon: HardHat, soulId: 'grid-general-collaborator' }
 ]
 
 function getStepIndex(step: OnboardingStep): number {
@@ -142,14 +127,25 @@ function getPreferredSoulId(interestIds: string[]): string {
 function buildUserProfileBlock({
   nickname,
   language,
+  organization,
+  department,
+  jobTitle,
   interestLabels
 }: {
   nickname: string
   language: OnboardingLanguage
+  organization: string
+  department: string
+  jobTitle: string
   interestLabels: string[]
 }): string {
   const preferredLanguage = resolveLanguageName(language)
   const interests = interestLabels.length > 0 ? interestLabels.join(', ') : 'Not specified'
+  const workplaceLines = [
+    organization ? `- Organization: ${organization}` : null,
+    department ? `- Department: ${department}` : null,
+    jobTitle ? `- Position: ${jobTitle}` : null
+  ].filter((line): line is string => Boolean(line))
 
   return [
     PROFILE_BLOCK_START,
@@ -157,7 +153,8 @@ function buildUserProfileBlock({
     '',
     `- Name: ${nickname}`,
     `- Preferred language: ${preferredLanguage}`,
-    `- Interested domains: ${interests}`,
+    ...workplaceLines,
+    `- Work domains: ${interests}`,
     '',
     PROFILE_BLOCK_END
   ].join('\n')
@@ -251,11 +248,17 @@ export function OnboardingPage(): React.JSX.Element {
   const persistedName = useSettingsStore((s) => s.userName)
   const persistedInterests = useSettingsStore((s) => s.onboardingInterests)
   const persistedSoulId = useSettingsStore((s) => s.defaultSoulTemplateId)
+  const persistedOrganization = useSettingsStore((s) => s.userOrganization)
+  const persistedDepartment = useSettingsStore((s) => s.userDepartment)
+  const persistedJobTitle = useSettingsStore((s) => s.userJobTitle)
   const [step, setStep] = useState<OnboardingStep>('intro')
   const [language, setLanguage] = useState<OnboardingLanguage>(
     persistedLanguage ?? detectSystemLanguage()
   )
   const [nickname, setNickname] = useState(persistedName)
+  const [organization, setOrganization] = useState(persistedOrganization)
+  const [department, setDepartment] = useState(persistedDepartment)
+  const [jobTitle, setJobTitle] = useState(persistedJobTitle)
   const [interestIds, setInterestIds] = useState<string[]>(persistedInterests)
   const [selectedSoulId, setSelectedSoulId] = useState(
     persistedSoulId || DEFAULT_BUILTIN_SOUL_TEMPLATE_ID
@@ -367,6 +370,9 @@ export function OnboardingPage(): React.JSX.Element {
     const profileBlock = buildUserProfileBlock({
       nickname: sanitizeNickname(nickname),
       language,
+      organization: organization.trim(),
+      department: department.trim(),
+      jobTitle: jobTitle.trim(),
       interestLabels
     })
     const nextContent = upsertUserProfileBlock(content ?? '', profileBlock)
@@ -376,7 +382,7 @@ export function OnboardingPage(): React.JSX.Element {
     })
     const writeError = readIpcError(writeResult)
     if (writeError) throw new Error(writeError)
-  }, [interestLabels, language, nickname])
+  }, [department, interestLabels, jobTitle, language, nickname, organization])
 
   const finishOnboarding = useCallback(async (): Promise<void> => {
     if (!selectedSoul) return
@@ -393,10 +399,14 @@ export function OnboardingPage(): React.JSX.Element {
       }
 
       await writeUserProfile()
+      await applyInterestPresets(interestIds)
 
       updateSettings({
         language,
         userName: sanitizeNickname(nickname),
+        userOrganization: organization.trim(),
+        userDepartment: department.trim(),
+        userJobTitle: jobTitle.trim(),
         onboardingInterests: interestIds,
         defaultSoulTemplateId: selectedSoul.id,
         onboardingCompleted: true,
@@ -409,7 +419,18 @@ export function OnboardingPage(): React.JSX.Element {
     } finally {
       setFinishing(false)
     }
-  }, [interestIds, language, nickname, selectedSoul, t, updateSettings, writeUserProfile])
+  }, [
+    department,
+    interestIds,
+    jobTitle,
+    language,
+    nickname,
+    organization,
+    selectedSoul,
+    t,
+    updateSettings,
+    writeUserProfile
+  ])
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
@@ -527,6 +548,59 @@ export function OnboardingPage(): React.JSX.Element {
                     >
                       <Send className="size-4" />
                     </Button>
+                  </div>
+                </div>
+              ) : null}
+
+              {step === 'workplace' ? (
+                <div className="max-w-2xl space-y-7">
+                  <OnboardingMark />
+                  <div className="space-y-3">
+                    <h1 className="text-3xl font-semibold">{t('onboarding.workplace.title')}</h1>
+                    <p className="text-sm text-muted-foreground">
+                      {t('onboarding.workplace.subtitle')}
+                    </p>
+                  </div>
+                  <div className="max-w-xl space-y-4">
+                    {(
+                      [
+                        {
+                          key: 'organization',
+                          icon: Building2,
+                          value: organization,
+                          onChange: setOrganization
+                        },
+                        {
+                          key: 'department',
+                          icon: Users,
+                          value: department,
+                          onChange: setDepartment
+                        },
+                        { key: 'jobTitle', icon: BadgeCheck, value: jobTitle, onChange: setJobTitle }
+                      ] as const
+                    ).map((field) => {
+                      const FieldIcon = field.icon
+                      return (
+                        <div key={field.key} className="space-y-1.5">
+                          <label className="text-sm font-medium text-foreground">
+                            {t(`onboarding.workplace.fields.${field.key}.label`)}
+                          </label>
+                          <div className="relative">
+                            <Input
+                              value={field.value}
+                              onChange={(event) => field.onChange(event.target.value)}
+                              autoFocus={field.key === 'organization'}
+                              className="h-11 rounded-lg pl-11"
+                              placeholder={t(`onboarding.workplace.fields.${field.key}.placeholder`)}
+                            />
+                            <FieldIcon className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                          </div>
+                        </div>
+                      )
+                    })}
+                    <p className="text-xs text-muted-foreground">
+                      {t('onboarding.workplace.hint')}
+                    </p>
                   </div>
                 </div>
               ) : null}

@@ -409,6 +409,9 @@ interface SettingsStore {
   shellEnvironmentVariablesText: string
   userName: string
   userAvatar: string
+  userOrganization: string
+  userDepartment: string
+  userJobTitle: string
   onboardingCompleted: boolean
   onboardingCompletedAt: number | null
   onboardingInterests: string[]
@@ -537,6 +540,9 @@ export const useSettingsStore = create<SettingsStore>()(
       shellEnvironmentVariablesText: '',
       userName: '',
       userAvatar: '',
+      userOrganization: '',
+      userDepartment: '',
+      userJobTitle: '',
       onboardingCompleted: false,
       onboardingCompletedAt: null,
       onboardingInterests: [],
@@ -984,6 +990,9 @@ export const useSettingsStore = create<SettingsStore>()(
         shellEnvironmentVariablesText: state.shellEnvironmentVariablesText,
         userName: state.userName,
         userAvatar: state.userAvatar,
+        userOrganization: state.userOrganization,
+        userDepartment: state.userDepartment,
+        userJobTitle: state.userJobTitle,
         onboardingCompleted: state.onboardingCompleted,
         onboardingCompletedAt: state.onboardingCompletedAt,
         onboardingInterests: state.onboardingInterests,
