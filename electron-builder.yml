@@ -1,5 +1,5 @@
 appId: com.opencowork.app
-productName: OpenCoWork
+productName: 千行
 directories:
   buildResources: build
 afterPack: build/after-sign-mac.cjs
@@ -100,11 +100,11 @@ asarUnpack:
   - node_modules/@jitsi/robotjs/**
   - node_modules/node-gyp-build/**
 win:
-  executableName: OpenCoWork
+  executableName: QianXing
   icon: build/icon.ico
-  legalTrademarks: OpenCoWork
+  legalTrademarks: 千行
 nsis:
-  artifactName: ${name}-${version}-setup.${ext}
+  artifactName: qianxing-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always

@@ -172,8 +172,8 @@ export function startNativeCrashReporter(): void {
 
   try {
     crashReporter.start({
-      productName: 'OpenCoWork',
-      companyName: 'OpenCoWork',
+      productName: '千行',
+      companyName: '千行',
       uploadToServer: false,
       ignoreSystemCrashHandler: false,
       globalExtra: {

@@ -404,11 +404,11 @@ export function AppSidebar(): React.JSX.Element {
           <div className="flex items-center gap-2.5 px-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
             <img
               src={appIconUrl}
-              alt="OpenCoWork"
+              alt="千行"
               className="size-8 rounded-xl object-cover shadow-sm"
             />
             <span className="text-sm font-semibold tracking-tight group-data-[collapsible=icon]:hidden">
-              OpenCoWork
+              千行
             </span>
           </div>
         </SidebarHeader>

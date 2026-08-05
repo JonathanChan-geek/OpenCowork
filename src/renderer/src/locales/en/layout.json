@@ -1409,7 +1409,7 @@
     "agentReviewFailed": "Failed",
     "agentReviewing": "Reviewing...",
     "downloading": "Downloading...",
-    "noApiKeyTitle": "OpenCoWork Skills API key not configured",
+    "noApiKeyTitle": "千行 Skills API key not configured",
     "noApiKeyDesc": "Set your API key via the ⚙️ icon in the top bar to browse the skills.open-cowork.shop marketplace.",
     "getApiKey": "Get API Key"
   },

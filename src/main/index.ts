@@ -1081,7 +1081,7 @@ function createTray(): void {
 
   tray = new Tray(getTrayIcon())
 
-  tray.setToolTip('OpenCoWork')
+  tray.setToolTip('千行')
 
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -1371,7 +1371,7 @@ runLoggedStartupStep('set_app_name', () => {
   if (!app.isPackaged) {
     app.setName('OpenCoWork-dev')
   } else {
-    app.setName('OpenCoWork')
+    app.setName('千行')
   }
 })
 

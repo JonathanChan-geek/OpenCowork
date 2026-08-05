@@ -721,8 +721,8 @@ async function requestSystemFileAccess(
   const defaultPath = getSystemAccessDefaultPath(requestedPath)
   const operation = readNonEmptyString(record.operation) ?? 'access'
   const result = await dialog.showOpenDialog(targetWindow, {
-    title: 'Allow OpenCoWork to access this folder',
-    message: `OpenCoWork needs system permission to ${operation}:\n${requestedPath}`,
+    title: '允许千行访问此文件夹',
+    message: `千行需要系统权限以 ${operation}:\n${requestedPath}`,
     buttonLabel: 'Allow Access',
     properties: ['openDirectory'],
     defaultPath,
@@ -1139,7 +1139,7 @@ export function registerSidecarHandlers(): void {
           duration?: number
         }
         try {
-          showSystemNotification(notifyArgs.title ?? 'OpenCoWork', notifyArgs.body ?? '')
+          showSystemNotification(notifyArgs.title ?? '千行', notifyArgs.body ?? '')
           return { success: true }
         } catch (err) {
           return { success: false, error: err instanceof Error ? err.message : String(err) }

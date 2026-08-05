@@ -98,8 +98,8 @@
     "next": "Next",
     "back": "Previous",
     "intro": {
-      "title": "Hi, welcome to OpenCoWork",
-      "subtitle": "OpenCoWork is a local-first workspace for multi-agent AI collaboration. It can read your project context, use local tools with approval, and help agents work alongside you in code, research, planning, and daily workflows.",
+      "title": "Hi, welcome to 千行",
+      "subtitle": "千行 is a local-first workspace for multi-agent AI collaboration. It can read your project context, use local tools with approval, and help agents work alongside you in code, research, planning, and daily workflows.",
       "points": {
         "local": {
           "title": "Local tools, real context",
@@ -123,7 +123,7 @@
       "en": "English"
     },
     "nickname": {
-      "title": "What should OpenCoWork call you?",
+      "title": "What should 千行 call you?",
       "subtitle": "This is stored locally and written into USER.md so agents can address you naturally.",
       "placeholder": "Your nickname"
     },
@@ -148,7 +148,7 @@
     },
     "interests": {
       "title": "Which professional lines does your work belong to?",
-      "subtitle": "Pick one or more. OpenCoWork uses this to choose a better default persona and configuration.",
+      "subtitle": "Pick one or more. 千行 uses this to choose a better default persona and configuration.",
       "options": {
         "marketingCounter": "Marketing and customer service",
         "stationManager": "Station areas and power supply stations",
@@ -170,8 +170,8 @@
       "retry": "Retry"
     },
     "done": {
-      "action": "Enter OpenCoWork",
-      "toast": "OpenCoWork is ready",
+      "action": "Enter 千行",
+      "toast": "千行 is ready",
       "failed": "Failed to finish setup"
     }
   },

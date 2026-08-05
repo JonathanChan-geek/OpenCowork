@@ -61,7 +61,7 @@ export function registerNotifyHandlers(): void {
     { success: boolean; error?: string }
   >('notify:desktop', async (args) => {
     try {
-      showSystemNotification(args.title ?? 'OpenCoWork', args.body ?? '')
+      showSystemNotification(args.title ?? '千行', args.body ?? '')
       return { success: true }
     } catch (err) {
       return { success: false, error: err instanceof Error ? err.message : String(err) }
@@ -78,7 +78,7 @@ export function registerNotifyHandlers(): void {
       }
       const payload = {
         sessionId: args.sessionId,
-        title: args.title ?? 'OpenCoWork',
+        title: args.title ?? '千行',
         body: args.body ?? ''
       }
       safeSendMessagePackToAllWindows('notify:session-message', payload)

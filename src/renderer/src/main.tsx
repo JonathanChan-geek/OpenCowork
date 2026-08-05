@@ -39,7 +39,7 @@ void renderWindowSurface().catch((error) => {
   console.error('[Renderer] Failed to load window surface:', error)
   root.render(
     <div className="flex min-h-screen items-center justify-center bg-background px-6 text-center text-sm text-destructive">
-      Failed to load this window. Please reopen it or restart OpenCoWork.
+      Failed to load this window. Please reopen it or restart 千行.
     </div>
   )
 })

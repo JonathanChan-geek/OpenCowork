@@ -502,7 +502,7 @@
         "desc": "管理注入到新建本地 shell 会话中的额外环境变量。",
         "placeholder": "FOO=bar\nPATH=/tmp/test-bin:$PATH\n# export HELLO=world",
         "formatHint": "一行一个变量。支持 KEY=VALUE 或 export KEY=VALUE。",
-        "precedenceHint": "当变量名冲突时，OpenCoWork 配置值会覆盖当前进程环境变量。",
+        "precedenceHint": "当变量名冲突时，千行配置值会覆盖当前进程环境变量。",
         "newSessionHint": "仅影响新建的本地 shell 会话、后台进程和终端标签页。",
         "validationError": "第 {{line}} 行格式无效，未保存。请使用 KEY=VALUE 或 export KEY=VALUE。"
       }
@@ -1606,13 +1606,13 @@
     "provider": "市场提供商",
     "providerDesc": "选择从哪里获取技能",
     "selectProvider": "选择提供商",
-    "skillsmpDesc": "OpenCoWork Skills 在线市场（API 密钥可选）",
+    "skillsmpDesc": "千行 Skills 在线市场（API 密钥可选）",
     "builtinLabel": "内置",
     "builtinDesc": "本地内置技能列表（无需 API 密钥）",
     "builtinInfo": "使用随应用打包的内置技能。安装市场技能时会下载官方技能包并在本地执行安全检查。",
     "skillsmpInfo": "从 skills.open-cowork.shop 获取最新技能目录。搜索无需 API 密钥；如需额外能力，可在 Dashboard 生成密钥并参考 Docs 配置。",
     "apiKey": "API 密钥",
-    "apiKeyDesc": "可选：您的 OpenCoWork Skills API 密钥（如有）",
+    "apiKeyDesc": "可选：您的千行 Skills API 密钥（如有）",
     "apiKeyPlaceholder": "sk_live_...",
     "apiKeyRequired": "当前浏览技能市场无需 API 密钥。",
     "getApiKey": "获取 API 密钥",
@@ -1627,7 +1627,7 @@
   },
   "soulmarket": {
     "title": "SOUL 市场",
-    "desc": "使用共享的 Skills 市场 API 密钥浏览 OpenCoWork SOUL。",
+    "desc": "使用共享的 Skills 市场 API 密钥浏览千行 SOUL。",
     "apiKey": "API 密钥",
     "getApiKey": "获取 API 密钥",
     "openDocs": "打开文档",

@@ -114,7 +114,7 @@ export function DetachedSessionPage({ sessionId }: DetachedSessionPageProps): Re
   }, [initBackgroundProcessTracking])
 
   useEffect(() => {
-    const base = sessionView.title ? `${sessionView.title} — OpenCoWork` : 'OpenCoWork'
+    const base = sessionView.title ? `${sessionView.title} — 千行` : '千行'
     const prefix =
       pendingApprovalCount > 0 ? `(${pendingApprovalCount} pending) ` : isStreaming ? '⏳ ' : ''
     document.title = `${prefix}${base}`
